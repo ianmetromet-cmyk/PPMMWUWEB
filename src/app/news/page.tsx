@@ -4,9 +4,9 @@ import almanac from "@/assets/news/almanac.png";
 import featuredPhoto from "@/assets/news/featured-photo.png";
 import kget from "@/assets/news/kget.png";
 import localNewsMatters from "@/assets/news/local-news-matters.png";
-import sanJoseFlyer from "@/assets/news/san-jose-flyer.png";
 import sfChronicle from "@/assets/news/sf-chronicle.png";
 import sfgate from "@/assets/news/sfgate.png";
+import victoryFlyer from "@/assets/news/victory-flyer.jpg";
 import { PillLink } from "@/components/PillLink";
 import { TitleBanner } from "@/components/TitleBanner";
 import { externalLinks } from "@/lib/site";
@@ -128,13 +128,13 @@ export default function NewsPage() {
         </TitleBanner>
         <div className="flex flex-col gap-10 md:flex-row md:items-start md:gap-[72px]">
           <a
-            href={sanJoseFlyer.src}
-            download="ppmmwu-san-jose-campaign-update.png"
+            href={`${process.env.NEXT_PUBLIC_BASE_PATH}/downloads/ppmmwu-victory-flyer.pdf`}
+            download="PPMMWU Victory Flyer.pdf"
             className="block shrink-0 rounded-[24px] bg-ink p-6 transition-transform hover:-translate-y-1 md:w-[507px] md:p-10"
           >
             <Image
-              src={sanJoseFlyer}
-              alt="Our Voice, At Work campaign update flyer — download to share"
+              src={victoryFlyer}
+              alt="Our Voice, At Work campaign update flyer — download the PDF to share"
               className="h-auto w-full"
             />
           </a>
