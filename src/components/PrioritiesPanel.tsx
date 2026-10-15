@@ -1,5 +1,4 @@
 import type { ReactNode } from "react";
-import { externalLinks } from "@/lib/site";
 
 type Priority = {
   stat: string;
@@ -89,12 +88,6 @@ export function PrioritiesPanel() {
                 <p className="text-base leading-snug font-semibold">{item.description}</p>
               </div>
             </div>
-            <a
-              href={externalLinks.bargainingPrinciples}
-              className="mt-2 self-start border-b-2 border-ink text-lg font-black transition-colors hover:border-purple hover:text-purple"
-            >
-              Learn more →
-            </a>
           </li>
         ))}
       </ul>
