@@ -76,7 +76,7 @@ export function PrioritiesPanel() {
   return (
     <section aria-labelledby="priorities" className="flex flex-col gap-6">
       <h2 id="priorities" className="text-[clamp(26px,3.2vw,42px)] font-black text-purple">
-        WHAT WORKERS ARE FIGHTING FOR
+        WHAT WORKERS NEED TO STRENGTHEN OUR MISSION
       </h2>
       <ul className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
         {priorities.map((item) => (
