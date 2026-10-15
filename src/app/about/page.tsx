@@ -4,10 +4,8 @@ import allisonChung from "@/assets/team/allison-chung.png";
 import emmanuelAglubat from "@/assets/team/emmanuel-aglubat.png";
 import hannahTunnell from "@/assets/team/hannah-tunnell.png";
 import isabelElias from "@/assets/team/isabel-elias.png";
-import josefinaRodriguezName from "@/assets/team/josefina-rodriguez-name.png";
 import josefinaRodriguez from "@/assets/team/josefina-rodriguez.png";
 import lauraFloresGalicia from "@/assets/team/laura-flores-galicia.jpg";
-import luisBerberName from "@/assets/team/luis-berber-name.png";
 import luisBerber from "@/assets/team/luis-berber.png";
 import rosioRolliso from "@/assets/team/rosio-rolliso.png";
 import ryahIssa from "@/assets/team/ryah-issa.png";
@@ -18,17 +16,11 @@ type TeamMember = {
   name: string;
   role: string;
   photo: StaticImageData;
-  nameImage?: { src: StaticImageData; width: number };
 };
 
 const team: TeamMember[] = [
-  { name: "Luis Berber", role: "HSS", photo: luisBerber, nameImage: { src: luisBerberName, width: 103 } },
-  {
-    name: "Josefina Rodriguez",
-    role: "HSS",
-    photo: josefinaRodriguez,
-    nameImage: { src: josefinaRodriguezName, width: 175 },
-  },
+  { name: "Luis Berber", role: "HSS", photo: luisBerber },
+  { name: "Josefina Rodriguez", role: "HSS", photo: josefinaRodriguez },
   { name: "Rosio Rolliso", role: "HSS", photo: rosioRolliso },
   { name: "Allison Chung", role: "Clinician", photo: allisonChung },
   { name: "Isabel Elias", role: "Clinician", photo: isabelElias },
@@ -47,17 +39,9 @@ function TeamCard({ member }: { member: TeamMember }) {
         sizes="(min-width: 1024px) 386px, (min-width: 640px) 50vw, 100vw"
         className="absolute inset-x-0 top-0 h-auto w-full"
       />
-      <div className="absolute top-[196px] left-5 flex flex-col gap-1">
-        <p className="text-[11px] font-black text-cream opacity-60">{member.role}</p>
-        {member.nameImage ? (
-          <Image
-            src={member.nameImage.src}
-            alt={member.name}
-            style={{ width: member.nameImage.width, height: "auto" }}
-          />
-        ) : (
-          <p className="text-[17px] font-bold text-white">{member.name}</p>
-        )}
+      <div className="absolute inset-x-0 bottom-0 flex flex-col gap-1 bg-linear-to-t from-ink/85 via-ink/45 to-transparent px-5 pt-14 pb-4">
+        <p className="text-[11px] font-black text-cream opacity-80">{member.role}</p>
+        <p className="text-[17px] font-bold text-white">{member.name}</p>
       </div>
     </li>
   );
