@@ -74,14 +74,6 @@ const voices: Voice[] = [
     quote:
       "I became a nurse practitioner because I believe in caring for patients and supporting the communities we serve. Too often, we are asked to see more patients with fewer resources and less time to meet their needs. Quality patient care should always come before patient volume.",
   },
-  {
-    ...portrait(josefinaRodriguez, "Josefina Rodriguez"),
-    memberName: "Josefina Rodriguez",
-    role: "HSS II, Fulton",
-    team: "PPMMWU Bargaining Team Member",
-    quote:
-      "The dignity and respect we provide our patients must extend to the workers who care for them. Through our union, we are standing together for a meaningful voice, fairness, and the support we need to deliver quality care. When we stand up for each other, we stand up for our patients. The mission runs on us.",
-  },
 ];
 
 export default function ContactPage() {

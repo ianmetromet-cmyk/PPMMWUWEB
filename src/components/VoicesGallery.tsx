@@ -19,10 +19,6 @@ const fitClasses: Record<Voice["imageFit"], string> = {
   portrait: "object-cover object-[center_20%]",
 };
 
-function voiceLabel(index: number) {
-  return `VOICE ${String(index + 1).padStart(2, "0")}`;
-}
-
 export function VoicesGallery({ voices }: { voices: Voice[] }) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
@@ -52,7 +48,6 @@ export function VoicesGallery({ voices }: { voices: Voice[] }) {
             </div>
             <div className="flex flex-1 items-center justify-between gap-3 p-4">
               <div className="flex flex-col gap-1">
-                <p className="text-xs font-extrabold text-purple">{voiceLabel(index)}</p>
                 <p className="text-base font-extrabold">{voice.memberName}</p>
                 <p className="text-[13px] leading-[1.4] font-semibold opacity-75">Click to open quote window</p>
               </div>
@@ -75,13 +70,10 @@ export function VoicesGallery({ voices }: { voices: Voice[] }) {
         onClick={(event) => event.target === dialogRef.current && dialogRef.current?.close()}
         className="m-auto max-h-[calc(100dvh-32px)] w-[min(1309px,calc(100vw-32px))] rounded-[24px] border-2 border-line bg-cream p-0 text-ink shadow-[0px_12px_28px_0px_rgba(0,0,0,0.08)] backdrop:bg-ink/60"
       >
-        {active && activeIndex !== null && (
+        {active && (
           <div className="flex flex-col gap-5 p-6">
             <div className="flex items-center justify-between gap-4">
-              <div className="flex flex-col gap-1 font-extrabold">
-                <p className="text-sm text-purple">{voiceLabel(activeIndex)}</p>
-                <p className="text-[28px]">{active.memberName}</p>
-              </div>
+              <p className="text-[28px] font-extrabold">{active.memberName}</p>
               <button
                 type="button"
                 onClick={() => dialogRef.current?.close()}
