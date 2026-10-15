@@ -3,6 +3,7 @@ import Link from "next/link";
 import heroBanner from "@/assets/home/hero-banner.png";
 import { TitleBanner } from "@/components/TitleBanner";
 import { UnionUpdate } from "@/components/UnionUpdate";
+import { UpdatesSignup } from "@/components/UpdatesSignup";
 import { externalLinks } from "@/lib/site";
 
 const resourceCards = [
@@ -65,6 +66,10 @@ export default function HomePage() {
           </TitleBanner>
           <UnionUpdate />
         </section>
+
+        <div className="mt-16">
+          <UpdatesSignup />
+        </div>
 
         <section aria-labelledby="resources" className="mt-24 flex flex-col gap-6">
           <h2 id="resources" className="text-[clamp(34px,5vw,60px)] leading-tight font-black text-purple">
