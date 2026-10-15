@@ -21,5 +21,14 @@ Then open http://localhost:3000.
 
 ## Deployment
 
-Every push to `main` builds a static export and publishes it to GitHub Pages via `.github/workflows/deploy.yml`.
-In the repo settings, set **Pages → Build and deployment → Source** to **GitHub Actions** (one-time setup).
+Every push to `main` builds a static export and publishes it to the **`gh-pages`** branch.
+
+**One-time setup (repo owner):**
+
+1. Open [Settings → Pages](https://github.com/ianmetromet-cmyk/PPMMWUWEB/settings/pages).
+2. Under **Build and deployment**, set **Source** to **Deploy from a branch**.
+3. Choose **Branch:** `gh-pages`, **Folder:** `/ (root)`, then **Save**.
+
+**Share this link:** https://ianmetromet-cmyk.github.io/PPMMWUWEB/
+
+After the first successful [Deploy to GitHub Pages](https://github.com/ianmetromet-cmyk/PPMMWUWEB/actions) workflow run, step 3 may take a minute before the site responds.

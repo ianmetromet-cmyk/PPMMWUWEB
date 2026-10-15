@@ -1,3 +1,8 @@
+# Publishes the static export to the gh-pages branch.
+# One-time setup (repo owner): Settings → Pages → Build and deployment →
+# Source: Deploy from a branch → Branch: gh-pages → / (root) → Save.
+# Live URL: https://ianmetromet-cmyk.github.io/PPMMWUWEB/
+
 name: Deploy to GitHub Pages
 
 on:
@@ -6,39 +11,34 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
 concurrency:
   group: pages
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: 24
           cache: npm
-      - id: pages
-        uses: actions/configure-pages@v5
-      - run: npm ci
-      - run: npm run build
-        env:
-          PAGES_BASE_PATH: ${{ steps.pages.outputs.base_path }}
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./out
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
+      - run: npm ci
+
+      - name: Build static site
+        run: npm run build
+        env:
+          PAGES_BASE_PATH: /PPMMWUWEB
+
+      - name: Publish to gh-pages branch
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./out
+          publish_branch: gh-pages
+          force_orphan: true
