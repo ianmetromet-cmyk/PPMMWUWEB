@@ -1,5 +1,10 @@
 import type { Metadata } from "next";
+import type { StaticImageData } from "next/image";
 import featuredPhoto from "@/assets/news/featured-photo.png";
+import allisonChung from "@/assets/team/allison-chung.png";
+import josefinaRodriguez from "@/assets/team/josefina-rodriguez.png";
+import lauraFloresGalicia from "@/assets/team/laura-flores-galicia.png";
+import ryahIssa from "@/assets/team/ryah-issa.png";
 import groupPhoto from "@/assets/voices/group-photo.png";
 import { ContactForm } from "@/components/ContactForm";
 import { PillLink } from "@/components/PillLink";
@@ -8,36 +13,85 @@ import { externalLinks } from "@/lib/site";
 
 export const metadata: Metadata = { title: "Contact Us" };
 
+const groupImage = {
+  image: groupPhoto,
+  imageAlt: "PPMM Workers United members raising their fists together",
+  imageFit: "contain",
+} as const;
+
+const pairImage = {
+  image: featuredPhoto,
+  imageAlt: "Two PPMM Workers United members smiling",
+  imageFit: "cover",
+} as const;
+
+function portrait(image: StaticImageData, name: string) {
+  return { image, imageAlt: `Portrait of ${name}`, imageFit: "portrait" } as const;
+}
+
 const voices: Voice[] = [
   {
-    label: "VOICE 01",
-    title: "Member story",
-    image: groupPhoto,
-    imageAlt: "PPMM Workers United members raising their fists together",
-    imageFit: "contain",
-    quote: "Quote placeholder — insert member story here.",
-    memberName: "Member name placeholder",
-    worksite: "Worksite / role placeholder",
+    ...groupImage,
+    memberName: "Aliya Caler",
+    role: "Clinician, Oakland",
+    team: "PPMMWU Member Action Team Member",
+    quote:
+      "I do this work for people in our communities who too often feel unheard, disrespected, or undervalued. Everyone deserves compassionate, judgment-free care and the freedom to make decisions about their own lives and futures. Our patients and coworkers deserve the same compassion and respect that drive our mission. When workers are respected, valued, and supported, we can provide stronger care and build a stronger future for the communities we serve. The mission runs on us.",
   },
   {
-    label: "VOICE 02",
-    title: "Member story",
-    image: featuredPhoto,
-    imageAlt: "Two PPMM Workers United members smiling",
-    imageFit: "cover",
-    quote: "Quote placeholder — insert member story here.",
-    memberName: "Member name placeholder",
-    worksite: "Worksite / role placeholder",
+    ...portrait(ryahIssa, "Ryah Issa"),
+    memberName: "Ryah Issa",
+    role: "RN, San Jose Eastside",
+    team: "PPMMWU Bargaining Team Member",
+    quote:
+      "Our community of workers and patients are seeking safe, and supportive working conditions, and transparency in leadership decisions. Our working conditions directly impact the care we provide. Our voice is crucial to strengthen and shape a stronger and sustainable future of Planned Parenthood Mar Monte Workers United run clinics: reproductive justice and access to quality health care matters!",
   },
   {
-    label: "VOICE 03",
-    title: "Member story",
-    image: featuredPhoto,
-    imageAlt: "Two PPMM Workers United members smiling",
-    imageFit: "cover",
-    quote: "Quote placeholder — insert member story here.",
-    memberName: "Member name placeholder",
-    worksite: "Worksite / role placeholder",
+    ...portrait(josefinaRodriguez, "Josefina Rodriguez"),
+    memberName: "Josefina Rodriguez",
+    role: "HSS II, Fulton",
+    team: "PPMMWU Bargaining Team Member",
+    quote:
+      "I do this work for all the individuals who sit in a Planned Parenthood waiting room, pregnant, scared, and uncertain about the future. Someone was there for me without judgment. Every patient deserves compassion, dignity, and someone they can trust. The mission runs on us.",
+  },
+  {
+    ...pairImage,
+    memberName: "Leticia Ornelas",
+    team: "PPMMWU Member Action Team",
+    quote:
+      "New hires at Planned Parenthood Mar Monte are routinely placed on the clinic floor without adequate training. Leadership decisions that impact staffing and constant turnover leave our community unprepared for critical responsibilities. When a young patient comes to us scared or facing an important, deeply personal healthcare decision, proper training and mentorship are essential to supporting our coworkers and protecting our patients. The mission runs on us.",
+  },
+  {
+    ...portrait(allisonChung, "Allison Chung"),
+    memberName: "Allison Chung",
+    role: "Clinician, Sacramento B St",
+    team: "PPMMWU Bargaining Team Member",
+    quote:
+      "I do this work because it’s my livelihood, and like my coworkers, I deserve a job that provides stability and a future I can count on. Keeping our clinics strong means keeping experienced workers from leaving. We need fair compensation, manageable workloads, and working conditions that make people want to stay. Investing in a sustainable workforce means investing in the long-term future of our clinics and the patients who depend on them.",
+  },
+  {
+    ...portrait(lauraFloresGalicia, "Laura Flores Galicia"),
+    memberName: "Laura Flores Galicia",
+    role: "HSS, Sacramento B St",
+    team: "PPMMWU Bargaining Team Member",
+    quote:
+      "It’s more important than ever to unite with our community and ensure that our employer realizes that we are human beings, who truly believe in our mission, before many more good people leave our team.",
+  },
+  {
+    ...groupImage,
+    memberName: "Nancy Griffith",
+    role: "Nurse Practitioner, Roseville",
+    team: "PPMMWU Member Action Team",
+    quote:
+      "I became a nurse practitioner because I believe in caring for patients and supporting the communities we serve. Too often, we are asked to see more patients with fewer resources and less time to meet their needs. Quality patient care should always come before patient volume.",
+  },
+  {
+    ...portrait(josefinaRodriguez, "Josefina Rodriguez"),
+    memberName: "Josefina Rodriguez",
+    role: "HSS II, Fulton",
+    team: "PPMMWU Bargaining Team Member",
+    quote:
+      "The dignity and respect we provide our patients must extend to the workers who care for them. Through our union, we are standing together for a meaningful voice, fairness, and the support we need to deliver quality care. When we stand up for each other, we stand up for our patients. The mission runs on us.",
   },
 ];
 

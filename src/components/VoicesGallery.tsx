@@ -4,51 +4,62 @@ import Image, { type StaticImageData } from "next/image";
 import { useRef, useState } from "react";
 
 export type Voice = {
-  label: string;
-  title: string;
   image: StaticImageData;
   imageAlt: string;
-  imageFit: "contain" | "cover";
+  imageFit: "contain" | "cover" | "portrait";
   quote: string;
   memberName: string;
-  worksite: string;
+  role?: string;
+  team: string;
 };
+
+const fitClasses: Record<Voice["imageFit"], string> = {
+  contain: "object-contain",
+  cover: "object-cover",
+  portrait: "object-cover object-[center_20%]",
+};
+
+function voiceLabel(index: number) {
+  return `VOICE ${String(index + 1).padStart(2, "0")}`;
+}
 
 export function VoicesGallery({ voices }: { voices: Voice[] }) {
   const dialogRef = useRef<HTMLDialogElement>(null);
-  const [active, setActive] = useState<Voice | null>(null);
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const active = activeIndex === null ? null : voices[activeIndex];
 
-  function open(voice: Voice) {
-    setActive(voice);
+  function open(index: number) {
+    setActiveIndex(index);
     dialogRef.current?.showModal();
   }
 
   return (
     <>
-      <ul className="grid gap-6 md:grid-cols-3">
-        {voices.map((voice) => (
+      <ul className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {voices.map((voice, index) => (
           <li
-            key={voice.label}
+            key={voice.quote.slice(0, 32)}
             className="flex h-[334px] flex-col overflow-hidden rounded-[24px] border border-line bg-cream shadow-[0px_12px_28px_0px_rgba(0,0,0,0.08)]"
           >
-            <div className="relative h-[220px] w-full">
+            <div className="relative h-[220px] w-full bg-purple">
               <Image
                 src={voice.image}
                 alt={voice.imageAlt}
                 fill
-                sizes="(min-width: 768px) 420px, 100vw"
-                className={voice.imageFit === "contain" ? "object-contain" : "object-cover"}
+                sizes="(min-width: 1024px) 420px, (min-width: 768px) 50vw, 100vw"
+                className={fitClasses[voice.imageFit]}
               />
             </div>
             <div className="flex flex-1 items-center justify-between gap-3 p-4">
               <div className="flex flex-col gap-1">
-                <p className="text-xs font-extrabold text-purple">{voice.label}</p>
-                <p className="text-base font-extrabold">{voice.title}</p>
+                <p className="text-xs font-extrabold text-purple">{voiceLabel(index)}</p>
+                <p className="text-base font-extrabold">{voice.memberName}</p>
                 <p className="text-[13px] leading-[1.4] font-semibold opacity-75">Click to open quote window</p>
               </div>
               <button
                 type="button"
-                onClick={() => open(voice)}
+                onClick={() => open(index)}
+                aria-label={`Open quote from ${voice.memberName}`}
                 className="shrink-0 rounded-full border-2 border-ink bg-yellow px-3.5 py-2.5 text-sm font-extrabold text-purple transition-transform hover:-translate-y-0.5"
               >
                 OPEN QUOTE
@@ -60,15 +71,16 @@ export function VoicesGallery({ voices }: { voices: Voice[] }) {
 
       <dialog
         ref={dialogRef}
+        aria-label={active ? `Quote from ${active.memberName}` : undefined}
         onClick={(event) => event.target === dialogRef.current && dialogRef.current?.close()}
-        className="m-auto w-[min(1309px,calc(100vw-32px))] rounded-[24px] border-2 border-line bg-cream p-0 text-ink shadow-[0px_12px_28px_0px_rgba(0,0,0,0.08)] backdrop:bg-ink/60"
+        className="m-auto max-h-[calc(100dvh-32px)] w-[min(1309px,calc(100vw-32px))] rounded-[24px] border-2 border-line bg-cream p-0 text-ink shadow-[0px_12px_28px_0px_rgba(0,0,0,0.08)] backdrop:bg-ink/60"
       >
-        {active && (
+        {active && activeIndex !== null && (
           <div className="flex flex-col gap-5 p-6">
             <div className="flex items-center justify-between gap-4">
               <div className="flex flex-col gap-1 font-extrabold">
-                <p className="text-sm text-purple">{active.label}</p>
-                <p className="text-[28px]">{active.title}</p>
+                <p className="text-sm text-purple">{voiceLabel(activeIndex)}</p>
+                <p className="text-[28px]">{active.memberName}</p>
               </div>
               <button
                 type="button"
@@ -79,24 +91,27 @@ export function VoicesGallery({ voices }: { voices: Voice[] }) {
               </button>
             </div>
             <div className="flex flex-col gap-6 md:flex-row">
-              <div className="relative aspect-[469/392] w-full shrink-0 overflow-hidden rounded-[20px] md:w-[469px]">
+              <div className="relative aspect-[469/392] w-full shrink-0 overflow-hidden rounded-[20px] bg-purple md:w-[469px]">
                 <Image
                   src={active.image}
                   alt={active.imageAlt}
                   fill
                   sizes="469px"
-                  className={active.imageFit === "contain" ? "object-contain" : "object-cover"}
+                  className={fitClasses[active.imageFit]}
                 />
               </div>
-              <div className="flex flex-1 flex-col gap-4 rounded-[20px] border border-line bg-cream p-6">
+              <figure className="flex flex-1 flex-col gap-4 rounded-[20px] border border-line bg-cream p-6">
                 <p className="text-xs font-extrabold text-purple">QUOTE</p>
-                <blockquote className="text-[clamp(20px,2.2vw,28px)] leading-[1.3] font-extrabold">
+                <blockquote className="text-[clamp(17px,1.6vw,22px)] leading-[1.4] font-extrabold">
                   “{active.quote}”
                 </blockquote>
-                <p className="text-xs font-extrabold text-purple">ATTRIBUTION</p>
-                <p className="text-base font-extrabold">{active.memberName}</p>
-                <p className="text-sm leading-[1.4] font-bold opacity-75">{active.worksite}</p>
-              </div>
+                <figcaption className="flex flex-col gap-1">
+                  <p className="text-xs font-extrabold text-purple">ATTRIBUTION</p>
+                  <p className="text-base font-extrabold">{active.memberName}</p>
+                  {active.role && <p className="text-sm leading-[1.4] font-bold opacity-75">{active.role}</p>}
+                  <p className="text-sm leading-[1.4] font-bold opacity-75">{active.team}</p>
+                </figcaption>
+              </figure>
             </div>
           </div>
         )}

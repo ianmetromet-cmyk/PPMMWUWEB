@@ -16,7 +16,6 @@ export const metadata: Metadata = { title: "News" };
 type Article = {
   image: StaticImageData;
   headline: string;
-  // Replace "#" with the article URL.
   href: string;
 };
 
@@ -24,12 +23,12 @@ const sideArticles: Article[] = [
   {
     image: sfgate,
     headline: "SFGATE: Regional: Nurses and others at Planned Parenthood's largest affiliate vote to form union",
-    href: "#",
+    href: "https://www.sfgate.com/news/bayarea/article/regional-workers-at-largest-planned-parenthood-22256377.php",
   },
   {
     image: kget,
     headline: "KGET 17: Bakersfield, statewide Planned Parenthood clinic to unionize under SEIU",
-    href: "#",
+    href: "https://www.kget.com/news/local-news/bakersfield-statewide-planned-parenthood-clinic-to-unionize-under-seiu/",
   },
 ];
 
@@ -37,27 +36,26 @@ const bottomArticles: Article[] = [
   {
     image: almanac,
     headline: "The Almanac: Nurses and staff at local Planned Parenthood affiliate vote to form union",
-    href: "#",
+    href: "https://www.almanacnews.com/health/2026/05/21/nurses-and-others-at-local-planned-parenthood-affiliate-vote-to-form-union/",
   },
   {
     image: localNewsMatters,
     headline: "Local News Matters: Workers at Planned Parenthood's largest affiliate weigh joining SEIU Local 521",
-    href: "#",
+    href: "https://localnewsmatters.org/2026/05/13/planned-parenthood-mar-monte-union-vote/",
   },
   {
     image: sfChronicle,
     headline: "San Francisco Chronicle: Workers at Planned Parenthood's largest affiliate are unionizing, citing Trump cuts",
-    href: "#",
+    href: "https://www.sfchronicle.com/politics/article/planned-parenthood-union-medicaid-trump-22249797.php",
   },
 ];
 
 function ArticleLink({ article }: { article: Article }) {
-  const external = article.href !== "#";
   return (
     <a
       href={article.href}
-      target={external ? "_blank" : undefined}
-      rel={external ? "noreferrer" : undefined}
+      target="_blank"
+      rel="noreferrer"
       className="block transition-transform hover:-translate-y-1"
     >
       <Image src={article.image} alt={article.headline} className="h-auto w-full" />

@@ -1,13 +1,12 @@
-// Replace each "#" with the real destination once it's available.
+// Replace "#" with the real destination once it's available.
 export const externalLinks = {
-  linktree: "#",
-  memberActionTeam: "#",
+  linktree: "https://linktr.ee/ppmmwu",
+  memberActionTeam: "https://tr.ee/hijdXx6ALv",
   bargainingPrinciples: "#",
 };
 
-// A Formspree (or similar) endpoint, e.g. "https://formspree.io/f/abcd1234".
-// GitHub Pages can't process form submissions on its own.
-export const contactFormEndpoint = "";
+// GitHub Pages can't process form submissions on its own, so the form posts to Formspree.
+export const contactFormEndpoint = "https://formspree.io/f/meaepkjl";
 
 export const navItems = [
   { label: "HOME", href: "/" },

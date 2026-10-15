@@ -78,6 +78,7 @@ export default function HomePage() {
                 <Wrapper
                   key={card.title}
                   href={card.href}
+                  {...(isInternal ? {} : { target: "_blank", rel: "noreferrer" })}
                   className={`flex min-h-[380px] flex-col gap-[18px] rounded-[20px] border-3 p-6 transition-transform hover:-translate-y-1 ${card.card}`}
                 >
                   <p className={`text-[23px] font-extrabold ${card.eyebrowColor}`}>{card.eyebrow}</p>
