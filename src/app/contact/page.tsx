@@ -6,6 +6,7 @@ import josefinaRodriguez from "@/assets/team/josefina-rodriguez.png";
 import lauraFloresGalicia from "@/assets/team/laura-flores-galicia.png";
 import ryahIssa from "@/assets/team/ryah-issa.png";
 import groupPhoto from "@/assets/voices/group-photo.png";
+import nancyGriffith from "@/assets/voices/nancy-griffith.jpg";
 import { ContactForm } from "@/components/ContactForm";
 import { PillLink } from "@/components/PillLink";
 import { type Voice, VoicesGallery } from "@/components/VoicesGallery";
@@ -78,7 +79,7 @@ const voices: Voice[] = [
       "It’s more important than ever to unite with our community and ensure that our employer realizes that we are human beings, who truly believe in our mission, before many more good people leave our team.",
   },
   {
-    ...groupImage,
+    ...portrait(nancyGriffith, "Nancy Griffith"),
     memberName: "Nancy Griffith",
     role: "Nurse Practitioner, Roseville",
     team: "PPMMWU Member Action Team",
