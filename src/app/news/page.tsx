@@ -8,6 +8,7 @@ import sfChronicle from "@/assets/news/sf-chronicle.png";
 import sfgate from "@/assets/news/sfgate.png";
 import victoryFlyer from "@/assets/news/victory-flyer.jpg";
 import { PillLink } from "@/components/PillLink";
+import { ScrollPanel } from "@/components/ScrollPanel";
 import { TitleBanner } from "@/components/TitleBanner";
 import { externalLinks } from "@/lib/site";
 
@@ -85,28 +86,32 @@ export default function NewsPage() {
         </p>
       </header>
 
-      <section
-        aria-label="News coverage"
-        className="mt-10 grid gap-x-10 gap-y-12 md:grid-cols-3 md:items-start md:px-6"
+      <ScrollPanel
+        label="News coverage"
+        tone="light"
+        height="h-[640px] md:h-[760px]"
+        className="mt-10 md:px-6"
       >
-        <div className="flex flex-col gap-12">
-          {sideArticles.map((article) => (
-            <ArticleLink key={article.headline} article={article} />
+        <div className="grid gap-x-10 gap-y-12 pb-10 md:grid-cols-3 md:items-start">
+          <div className="flex flex-col gap-12">
+            {sideArticles.map((article) => (
+              <ArticleLink key={article.headline} article={article} />
+            ))}
+          </div>
+          <div className="relative aspect-[877/494] w-full shadow-[0px_10px_10px_0px_rgba(0,0,0,0.25)] md:col-span-2">
+            <Image
+              src={featuredPhoto}
+              alt="Two PPMM Workers United members smiling"
+              fill
+              sizes="(min-width: 768px) 65vw, 100vw"
+              className="object-cover object-top"
+            />
+          </div>
+          {bottomArticles.map((article) => (
+            <ArticleLink key={article.headline} article={article} alignLabel />
           ))}
         </div>
-        <div className="relative aspect-[877/494] w-full shadow-[0px_10px_10px_0px_rgba(0,0,0,0.25)] md:col-span-2">
-          <Image
-            src={featuredPhoto}
-            alt="Two PPMM Workers United members smiling"
-            fill
-            sizes="(min-width: 768px) 65vw, 100vw"
-            className="object-cover object-top"
-          />
-        </div>
-        {bottomArticles.map((article) => (
-          <ArticleLink key={article.headline} article={article} alignLabel />
-        ))}
-      </section>
+      </ScrollPanel>
 
       <aside className="mt-12 flex flex-col gap-6 rounded-[20px] bg-ink p-6 lg:flex-row lg:items-center lg:justify-between">
         <div className="flex max-w-[760px] flex-col gap-2.5">
