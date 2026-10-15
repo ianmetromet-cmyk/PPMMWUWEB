@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import type { StaticImageData } from "next/image";
-import featuredPhoto from "@/assets/news/featured-photo.png";
 import allisonChung from "@/assets/team/allison-chung.png";
 import josefinaRodriguez from "@/assets/team/josefina-rodriguez.png";
 import lauraFloresGalicia from "@/assets/team/laura-flores-galicia.jpg";
 import ryahIssa from "@/assets/team/ryah-issa.png";
-import groupPhoto from "@/assets/voices/group-photo.png";
+import aliyaCaler from "@/assets/voices/aliya-caler.jpg";
+import leticiaOrnelas from "@/assets/voices/leticia-ornelas.jpg";
 import nancyGriffith from "@/assets/voices/nancy-griffith.jpg";
 import { ContactForm } from "@/components/ContactForm";
 import { PillLink } from "@/components/PillLink";
@@ -14,25 +14,13 @@ import { externalLinks } from "@/lib/site";
 
 export const metadata: Metadata = { title: "Contact Us" };
 
-const groupImage = {
-  image: groupPhoto,
-  imageAlt: "PPMM Workers United members raising their fists together",
-  imageFit: "contain",
-} as const;
-
-const pairImage = {
-  image: featuredPhoto,
-  imageAlt: "Two PPMM Workers United members smiling",
-  imageFit: "cover",
-} as const;
-
 function portrait(image: StaticImageData, name: string) {
   return { image, imageAlt: `Portrait of ${name}`, imageFit: "portrait" } as const;
 }
 
 const voices: Voice[] = [
   {
-    ...groupImage,
+    ...portrait(aliyaCaler, "Aliya Caler"),
     memberName: "Aliya Caler",
     role: "Clinician, Oakland",
     team: "PPMMWU Member Action Team Member",
@@ -56,7 +44,7 @@ const voices: Voice[] = [
       "I do this work for all the individuals who sit in a Planned Parenthood waiting room, pregnant, scared, and uncertain about the future. Someone was there for me without judgment. Every patient deserves compassion, dignity, and someone they can trust. The mission runs on us.",
   },
   {
-    ...pairImage,
+    ...portrait(leticiaOrnelas, "Leticia Ornelas"),
     memberName: "Leticia Ornelas",
     team: "PPMMWU Member Action Team",
     quote:
