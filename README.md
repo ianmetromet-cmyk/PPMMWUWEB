@@ -31,4 +31,4 @@ Every push to `main` builds a static export and publishes it to the **`gh-pages`
 
 **Share this link:** https://ianmetromet-cmyk.github.io/PPMMWUWEB/
 
-After the first successful [Deploy to GitHub Pages](https://github.com/ianmetromet-cmyk/PPMMWUWEB/actions) workflow run, step 3 may take a minute before the site responds.
+If Pages was never turned on, run `./scripts/enable-github-pages.sh` after `gh auth login`, or use Settings → Pages → Deploy from branch → `gh-pages` → `/ (root)`.
