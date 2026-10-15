@@ -6,7 +6,7 @@ import hannahTunnell from "@/assets/team/hannah-tunnell.png";
 import isabelElias from "@/assets/team/isabel-elias.png";
 import josefinaRodriguezName from "@/assets/team/josefina-rodriguez-name.png";
 import josefinaRodriguez from "@/assets/team/josefina-rodriguez.png";
-import lauraFloresGalicia from "@/assets/team/laura-flores-galicia.png";
+import lauraFloresGalicia from "@/assets/team/laura-flores-galicia.jpg";
 import luisBerberName from "@/assets/team/luis-berber-name.png";
 import luisBerber from "@/assets/team/luis-berber.png";
 import rosioRolliso from "@/assets/team/rosio-rolliso.png";

@@ -3,7 +3,7 @@ import type { StaticImageData } from "next/image";
 import featuredPhoto from "@/assets/news/featured-photo.png";
 import allisonChung from "@/assets/team/allison-chung.png";
 import josefinaRodriguez from "@/assets/team/josefina-rodriguez.png";
-import lauraFloresGalicia from "@/assets/team/laura-flores-galicia.png";
+import lauraFloresGalicia from "@/assets/team/laura-flores-galicia.jpg";
 import ryahIssa from "@/assets/team/ryah-issa.png";
 import groupPhoto from "@/assets/voices/group-photo.png";
 import nancyGriffith from "@/assets/voices/nancy-griffith.jpg";
