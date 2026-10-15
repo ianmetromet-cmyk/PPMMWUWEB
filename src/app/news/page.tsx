@@ -1,0 +1,143 @@
+import type { Metadata } from "next";
+import Image, { type StaticImageData } from "next/image";
+import almanac from "@/assets/news/almanac.png";
+import featuredPhoto from "@/assets/news/featured-photo.png";
+import kget from "@/assets/news/kget.png";
+import localNewsMatters from "@/assets/news/local-news-matters.png";
+import sanJoseFlyer from "@/assets/news/san-jose-flyer.png";
+import sfChronicle from "@/assets/news/sf-chronicle.png";
+import sfgate from "@/assets/news/sfgate.png";
+import { PillLink } from "@/components/PillLink";
+import { TitleBanner } from "@/components/TitleBanner";
+import { externalLinks } from "@/lib/site";
+
+export const metadata: Metadata = { title: "News" };
+
+type Article = {
+  image: StaticImageData;
+  headline: string;
+  // Replace "#" with the article URL.
+  href: string;
+};
+
+const sideArticles: Article[] = [
+  {
+    image: sfgate,
+    headline: "SFGATE: Regional: Nurses and others at Planned Parenthood's largest affiliate vote to form union",
+    href: "#",
+  },
+  {
+    image: kget,
+    headline: "KGET 17: Bakersfield, statewide Planned Parenthood clinic to unionize under SEIU",
+    href: "#",
+  },
+];
+
+const bottomArticles: Article[] = [
+  {
+    image: almanac,
+    headline: "The Almanac: Nurses and staff at local Planned Parenthood affiliate vote to form union",
+    href: "#",
+  },
+  {
+    image: localNewsMatters,
+    headline: "Local News Matters: Workers at Planned Parenthood's largest affiliate weigh joining SEIU Local 521",
+    href: "#",
+  },
+  {
+    image: sfChronicle,
+    headline: "San Francisco Chronicle: Workers at Planned Parenthood's largest affiliate are unionizing, citing Trump cuts",
+    href: "#",
+  },
+];
+
+function ArticleLink({ article }: { article: Article }) {
+  const external = article.href !== "#";
+  return (
+    <a
+      href={article.href}
+      target={external ? "_blank" : undefined}
+      rel={external ? "noreferrer" : undefined}
+      className="block transition-transform hover:-translate-y-1"
+    >
+      <Image src={article.image} alt={article.headline} className="h-auto w-full" />
+    </a>
+  );
+}
+
+export default function NewsPage() {
+  return (
+    <div className="mx-auto flex max-w-[1440px] flex-col px-5 pt-4 pb-16 md:px-14">
+      <header className="flex flex-col gap-2 md:px-6">
+        <h1 className="text-[clamp(40px,5.5vw,63px)] font-black text-purple">IN THE NEWS</h1>
+        <p className="text-[clamp(22px,3vw,40px)] font-black italic">
+          Click on a headline to access each article.
+        </p>
+      </header>
+
+      <section aria-label="News coverage" className="mt-8 flex flex-col gap-6">
+        <div className="flex flex-col gap-6 md:flex-row md:items-start md:gap-9">
+          <div className="flex flex-col gap-1 md:w-[30%]">
+            {sideArticles.map((article) => (
+              <ArticleLink key={article.headline} article={article} />
+            ))}
+          </div>
+          <div className="relative aspect-[877/494] w-full shadow-[0px_10px_10px_0px_rgba(0,0,0,0.25)] md:mt-6 md:flex-1">
+            <Image
+              src={featuredPhoto}
+              alt="Two PPMM Workers United members smiling"
+              fill
+              sizes="(min-width: 768px) 65vw, 100vw"
+              className="object-cover object-top"
+            />
+          </div>
+        </div>
+        <div className="grid gap-6 md:grid-cols-3 md:items-start">
+          {bottomArticles.map((article) => (
+            <ArticleLink key={article.headline} article={article} />
+          ))}
+        </div>
+      </section>
+
+      <aside className="mt-6 flex flex-col gap-6 rounded-[20px] bg-ink p-6 lg:flex-row lg:items-center lg:justify-between">
+        <div className="flex max-w-[760px] flex-col gap-2.5">
+          <p className="text-2xl font-extrabold text-cream md:text-[32px]">
+            Ready to move from election to action?
+          </p>
+          <p className="text-sm leading-[1.4] font-bold text-snow">
+            Join the Member Action Team, stay updated on bargaining progress, and connect with the organizing team.
+          </p>
+        </div>
+        <PillLink href={externalLinks.memberActionTeam} withArrow className="shrink-0 self-start px-[18px] lg:self-auto">
+          JOIN THE MEMBER ACTION TEAM
+        </PillLink>
+      </aside>
+
+      <section aria-labelledby="san-jose" className="mt-8 flex flex-col gap-6">
+        <TitleBanner className="self-start">
+          <span id="san-jose">VICTORIES AT SAN JOSE CLINIC!</span>
+        </TitleBanner>
+        <div className="flex flex-col gap-10 md:flex-row md:items-start md:gap-[72px]">
+          <a
+            href={sanJoseFlyer.src}
+            download="ppmmwu-san-jose-campaign-update.png"
+            className="block shrink-0 rounded-[24px] bg-ink p-6 transition-transform hover:-translate-y-1 md:w-[507px] md:p-10"
+          >
+            <Image
+              src={sanJoseFlyer}
+              alt="Our Voice, At Work campaign update flyer — download to share"
+              className="h-auto w-full"
+            />
+          </a>
+          <div className="flex flex-col gap-[1.2em] text-[clamp(22px,2.5vw,35px)] font-black italic md:pt-2">
+            <p>
+              We recently experienced a victory at our San Jose clinic which demonstrates the power of
+              bringing our union together!
+            </p>
+            <p>Click on the flyer to download and share with your coworkers!</p>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
