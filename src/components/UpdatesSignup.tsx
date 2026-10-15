@@ -54,19 +54,12 @@ export function UpdatesSignup() {
       </div>
 
       <div className="relative flex flex-col gap-6 p-6 md:p-10 lg:ml-[23%]">
-        <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-          <div className="flex flex-col gap-2">
-            <h2 id="updates-signup" className="text-[clamp(28px,3.4vw,44px)] leading-tight font-black text-snow">
-              DON’T MISS A BARGAINING UPDATE.
-            </h2>
-            <p className="text-base leading-[1.4] font-bold text-snow/90 md:text-lg">
-              Get campaign news, bargaining alerts and actions from PPMM Workers United.
-            </p>
-          </div>
-          <p className="shrink-0 text-xl leading-tight font-black text-yellow italic md:text-right md:text-2xl">
-            Same Mission.
-            <br />
-            Stronger Together.
+        <div className="flex flex-col gap-2">
+          <h2 id="updates-signup" className="text-[clamp(28px,3.4vw,44px)] leading-tight font-black text-snow">
+            DON’T MISS A BARGAINING UPDATE.
+          </h2>
+          <p className="text-base leading-[1.4] font-bold text-snow/90 md:text-lg">
+            Get campaign news, bargaining alerts and actions from PPMM Workers United.
           </p>
         </div>
 
