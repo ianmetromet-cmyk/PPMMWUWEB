@@ -17,16 +17,20 @@ type Article = {
   image: StaticImageData;
   headline: string;
   href: string;
+  // Pixel row in the image where the section label (e.g. "HEALTH") begins.
+  labelTop: number;
 };
 
 const sideArticles: Article[] = [
   {
     image: sfgate,
+    labelTop: 215,
     headline: "SFGATE: Regional: Nurses and others at Planned Parenthood's largest affiliate vote to form union",
     href: "https://www.sfgate.com/news/bayarea/article/regional-workers-at-largest-planned-parenthood-22256377.php",
   },
   {
     image: kget,
+    labelTop: 307,
     headline: "KGET 17: Bakersfield, statewide Planned Parenthood clinic to unionize under SEIU",
     href: "https://www.kget.com/news/local-news/bakersfield-statewide-planned-parenthood-clinic-to-unionize-under-seiu/",
   },
@@ -35,28 +39,36 @@ const sideArticles: Article[] = [
 const bottomArticles: Article[] = [
   {
     image: almanac,
+    labelTop: 251,
     headline: "The Almanac: Nurses and staff at local Planned Parenthood affiliate vote to form union",
     href: "https://www.almanacnews.com/health/2026/05/21/nurses-and-others-at-local-planned-parenthood-affiliate-vote-to-form-union/",
   },
   {
     image: localNewsMatters,
+    labelTop: 249,
     headline: "Local News Matters: Workers at Planned Parenthood's largest affiliate weigh joining SEIU Local 521",
     href: "https://localnewsmatters.org/2026/05/13/planned-parenthood-mar-monte-union-vote/",
   },
   {
     image: sfChronicle,
+    labelTop: 154,
     headline: "San Francisco Chronicle: Workers at Planned Parenthood's largest affiliate are unionizing, citing Trump cuts",
     href: "https://www.sfchronicle.com/politics/article/planned-parenthood-union-medicaid-trump-22249797.php",
   },
 ];
 
-function ArticleLink({ article }: { article: Article }) {
+const labelRatio = (article: Article) => article.labelTop / article.image.width;
+const bottomLabelRatio = Math.max(...bottomArticles.map(labelRatio));
+
+function ArticleLink({ article, alignLabel }: { article: Article; alignLabel?: boolean }) {
+  const offset = alignLabel ? bottomLabelRatio - labelRatio(article) : 0;
   return (
     <a
       href={article.href}
       target="_blank"
       rel="noreferrer"
-      className="block transition-transform hover:-translate-y-1"
+      style={{ "--label-offset": `${offset * 100}%` } as React.CSSProperties}
+      className="block transition-transform hover:-translate-y-1 md:pt-(--label-offset)"
     >
       <Image src={article.image} alt={article.headline} className="h-auto w-full" />
     </a>
@@ -73,31 +85,30 @@ export default function NewsPage() {
         </p>
       </header>
 
-      <section aria-label="News coverage" className="mt-8 flex flex-col gap-6">
-        <div className="flex flex-col gap-6 md:flex-row md:items-start md:gap-9">
-          <div className="flex flex-col gap-1 md:w-[30%]">
-            {sideArticles.map((article) => (
-              <ArticleLink key={article.headline} article={article} />
-            ))}
-          </div>
-          <div className="relative aspect-[877/494] w-full shadow-[0px_10px_10px_0px_rgba(0,0,0,0.25)] md:mt-6 md:flex-1">
-            <Image
-              src={featuredPhoto}
-              alt="Two PPMM Workers United members smiling"
-              fill
-              sizes="(min-width: 768px) 65vw, 100vw"
-              className="object-cover object-top"
-            />
-          </div>
-        </div>
-        <div className="grid gap-6 md:grid-cols-3 md:items-start">
-          {bottomArticles.map((article) => (
+      <section
+        aria-label="News coverage"
+        className="mt-10 grid gap-x-10 gap-y-12 md:grid-cols-3 md:items-start md:px-6"
+      >
+        <div className="flex flex-col gap-12">
+          {sideArticles.map((article) => (
             <ArticleLink key={article.headline} article={article} />
           ))}
         </div>
+        <div className="relative aspect-[877/494] w-full shadow-[0px_10px_10px_0px_rgba(0,0,0,0.25)] md:col-span-2">
+          <Image
+            src={featuredPhoto}
+            alt="Two PPMM Workers United members smiling"
+            fill
+            sizes="(min-width: 768px) 65vw, 100vw"
+            className="object-cover object-top"
+          />
+        </div>
+        {bottomArticles.map((article) => (
+          <ArticleLink key={article.headline} article={article} alignLabel />
+        ))}
       </section>
 
-      <aside className="mt-6 flex flex-col gap-6 rounded-[20px] bg-ink p-6 lg:flex-row lg:items-center lg:justify-between">
+      <aside className="mt-12 flex flex-col gap-6 rounded-[20px] bg-ink p-6 lg:flex-row lg:items-center lg:justify-between">
         <div className="flex max-w-[760px] flex-col gap-2.5">
           <p className="text-2xl font-extrabold text-cream md:text-[32px]">
             Ready to move from election to action?
