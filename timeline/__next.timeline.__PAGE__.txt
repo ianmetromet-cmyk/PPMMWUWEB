@@ -1,0 +1,28 @@
+1:"$Sreact.fragment"
+2:"/PPMMWUWEB/_next/static/chunks/3nbi26tmmecyc.js"
+3:I[36852,["$2"],"SiteHeader"]
+4:I[39756,["$2"],"default"]
+5:I[37457,["$2"],"default"]
+c:I[97367,["$2"],"OutletBoundary"]
+d:"$Sreact.suspense"
+10:"ViewportBoundary"
+11:I[97367,["$2"],"$10"]
+12:"MetadataBoundary"
+13:I[97367,["$2"],"$12"]
+14:I[27201,["$2"],"IconMark"]
+:HL["/PPMMWUWEB/_next/static/chunks/3-brm7qiyma5d.css","style"]
+7:X
+a:X
+a:C
+b:[["children",{"s":"__PAGE__","h":160,"d":{"r":["$","$1","c",{"children":[["$","div",null,{"className":"mx-auto flex max-w-[1440px] flex-col gap-10 px-5 py-16 md:px-[72px]","children":[["$","h1",null,{"className":"text-[clamp(38px,5vw,54px)] leading-[0.98] font-black text-purple","children":"TIMELINE"}],["$","div",null,{"className":"flex flex-col gap-[1.25em] text-lg leading-[1.25] font-extrabold md:text-2xl","children":[["$","p","In 2024, workers organiz",{"children":"In 2024, workers organized through in-person meetings outside clinics and peer-to-peer conversations, launching their authorization card campaign in October."}],["$","p","Support continued to gro",{"children":"Support continued to grow in 2025, when workers went public in June and, amid the closure of five clinics that July, called for a stronger voice in decisions affecting their jobs and patients. In October, workers and supporters including elected officials and Dolores Huerta called on PPMM to agree to neutrality."}],["$","p","CEO Stacy Cross publicly",{"children":"CEO Stacy Cross publicly acknowledged workers’ efforts to form a union. On March 25, 2026, PPMM and PPMM Workers United reached a neutrality agreement, allowing union organizers into clinic breakrooms beginning April 1. Voting began May 11, and on May 20, 2026, PPMM Workers United won its union election."}]]}]]}],null,["$","$Lc",null,{"children":["$","$d",null,{"name":"Next.MetadataOutlet","children":"$@e"}]}]]}],"p":"$@f","v":null,"s":"$7"}}]]
+8:[["children",{"s":"timeline","h":96,"d":{"r":["$","$1","c",{"children":[null,["$","$L4",null,{"parallelRouterKey":"children","template":["$","$L5",null,{}]}]]}],"p":"$@9","v":"$a","s":"$7"},"c":"$Qb"}]]
+0:{"t":{"t":{"s":"","h":80,"d":{"r":["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/PPMMWUWEB/_next/static/chunks/3-brm7qiyma5d.css","precedence":"next"}],["$","script","script-0",{"src":"/PPMMWUWEB/_next/static/chunks/3nbi26tmmecyc.js","async":true}]],["$","html",null,{"lang":"en","className":"xPbA_a_variable h-full antialiased","children":["$","body",null,{"className":"flex min-h-full flex-col bg-cream font-sans text-ink","children":[["$","$L3",null,{}],["$","main",null,{"className":"flex-1","children":["$","$L4",null,{"parallelRouterKey":"children","template":["$","$L5",null,{}],"notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]]}]}],["$","footer",null,{"className":"bg-ink","children":["$","div",null,{"className":"mx-auto flex max-w-[1440px] flex-col gap-5 px-5 py-7 md:px-[72px]","children":[["$","div",null,{"className":"h-px w-full bg-purple opacity-35"}],["$","div",null,{"className":"flex flex-col gap-4 md:flex-row md:items-center md:justify-between","children":[["$","div",null,{"className":"flex flex-col gap-1.5","children":[["$","p",null,{"className":"text-[26px] font-black text-purple-deep","children":"PPMMWU"}],["$","p",null,{"className":"text-[11px] font-bold text-white","children":"Planned Parenthood Mar Monte Workers United"}]]}],["$","p",null,{"className":"text-xl font-bold text-white md:text-[25px]","children":["Our work. ",["$","span",null,{"className":"text-yellow","children":"Our mission"}],". Our power."]}]]}]]}]}]]}]}]]}],"p":"$@6","v":null,"s":"$7"},"c":"$Q8"},"h":{"r":["$","$1","h",{"children":[null,["$","$L11",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","$L13",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$d",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Timeline | PPMMWU"}],["$","meta","1",{"name":"description","content":"Bargaining updates, member stories, campaign priorities, and ways to get involved with Planned Parenthood Mar Monte Workers United."}],["$","link","2",{"rel":"icon","href":"/PPMMWUWEB/favicon.ico?favicon.117ezoe8m31dk.ico","sizes":"48x48","type":"image/x-icon"}],["$","$L14","3",{}]]}]}],null]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"p":"$@15","v":null,"s":"$7"}},"a":"$@16","u":"$@17","b":"kSVoa1Od8-tV6HKcpM6fo"}
+e:null
+7:300
+17:true
+7:C
+16:0
+9:"$undefined"
+6:"$undefined"
+15:"$undefined"
+f:"$undefined"
