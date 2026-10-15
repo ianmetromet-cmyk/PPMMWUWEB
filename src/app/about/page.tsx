@@ -9,6 +9,7 @@ import lauraFloresGalicia from "@/assets/team/laura-flores-galicia.jpg";
 import luisBerber from "@/assets/team/luis-berber.png";
 import rosioRolliso from "@/assets/team/rosio-rolliso.png";
 import ryahIssa from "@/assets/team/ryah-issa.png";
+import { PrioritiesPanel } from "@/components/PrioritiesPanel";
 
 export const metadata: Metadata = { title: "About" };
 
@@ -47,16 +48,12 @@ function TeamCard({ member }: { member: TeamMember }) {
   );
 }
 
-const timeline = [
-  "In 2024, workers organized through in-person meetings outside clinics and peer-to-peer conversations, launching their authorization card campaign in October.",
-  "Support continued to grow in 2025, when workers went public in June and, amid the closure of five clinics that July, called for a stronger voice in decisions affecting their jobs and patients. In October, workers and supporters including elected officials and Dolores Huerta called on PPMM to agree to neutrality.",
-  "CEO Stacy Cross publicly acknowledged workers’ efforts to form a union. On March 25, 2026, PPMM and PPMM Workers United reached a neutrality agreement, allowing union organizers into clinic breakrooms beginning April 1. Voting began May 11, and on May 20, 2026, PPMM Workers United won its union election.",
-];
-
 export default function AboutPage() {
   return (
     <div className="mx-auto flex max-w-[1440px] flex-col gap-10 px-5 py-16 md:px-[72px]">
       <h1 className="text-[clamp(38px,5vw,54px)] leading-[0.98] font-black text-purple">ABOUT OUR UNION</h1>
+
+      <PrioritiesPanel />
 
       <section aria-labelledby="bargaining-team" className="flex flex-col gap-10">
         <h2 id="bargaining-team" className="text-[clamp(26px,3.2vw,42px)] font-black text-purple">
@@ -67,17 +64,6 @@ export default function AboutPage() {
             <TeamCard key={member.name} member={member} />
           ))}
         </ul>
-      </section>
-
-      <section aria-labelledby="timeline" className="flex flex-col gap-10">
-        <h2 id="timeline" className="text-[clamp(38px,5vw,54px)] leading-[0.98] font-black text-purple">
-          TIMELINE
-        </h2>
-        <div className="flex flex-col gap-[1.25em] text-lg leading-[1.25] font-extrabold md:text-2xl">
-          {timeline.map((text) => (
-            <p key={text.slice(0, 24)}>{text}</p>
-          ))}
-        </div>
       </section>
     </div>
   );

@@ -98,8 +98,7 @@ export function VoicesGallery({ voices }: { voices: Voice[] }) {
                   “{active.quote}”
                 </blockquote>
                 <figcaption className="flex flex-col gap-1">
-                  <p className="text-xs font-extrabold text-purple">ATTRIBUTION</p>
-                  <p className="text-base font-extrabold">{active.memberName}</p>
+                  <p className="text-base font-extrabold text-purple">{active.memberName}</p>
                   {active.role && <p className="text-sm leading-[1.4] font-bold opacity-75">{active.role}</p>}
                   <p className="text-sm leading-[1.4] font-bold opacity-75">{active.team}</p>
                 </figcaption>
