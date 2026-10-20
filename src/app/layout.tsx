@@ -6,7 +6,7 @@ import { SiteHeader } from "@/components/SiteHeader";
 import "./globals.css";
 
 // PPMMWU one-file update (October 2026)
-// 1. Constrain the homepage banner to 1000px without cropping.
+// 1. Constrain the homepage banner to 1500px without cropping.
 // 2. Hide the obsolete homepage bargaining-updates signup.
 // 3. Route the existing Contact Us form to Ian.newman@seiu521.org using FormSubmit.
 //
@@ -106,7 +106,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           main > img[alt^="The mission runs on us!"] {
             display: block;
             width: 100%;
-            max-width: 1000px;
+            max-width: 1500px;
             height: auto;
             margin-inline: auto;
           }
