@@ -47,62 +47,133 @@ export const metadata: Metadata = {
 
 const contactFormScript = `
 (function () {
-  // The site is static. Transport uses FormSubmit's documented AJAX endpoint.
-  // Its recipient must verify the destination email before messages are delivered.
-  // Intercept the old React/Formspree handler in the capturing phase.
+  // Keep the existing PPMMWU Contact Us design; intercept its legacy Formspree handler.
+  // FormSubmit must be ACTIVATED by the destination mailbox owner before it can deliver email.
+  var recipient = 'Ian.newman@seiu521.org';
+  var ajaxEndpoint = 'https://formsubmit.co/ajax/' + recipient;
+  var standardEndpoint = 'https://formsubmit.co/' + recipient;
+
+  function isContactForm(form) {
+    return form instanceof HTMLFormElement && !!form.closest('main') &&
+      !!form.querySelector('textarea[name="message"]') &&
+      !!form.querySelector('input[name="email"]') &&
+      !!form.querySelector('input[name="topic"]');
+  }
+
+  function collectFields(form) {
+    var fields = Object.fromEntries(new FormData(form).entries());
+    fields._subject = 'PPMMWU Website Contact Form — New Message';
+    fields._replyto = fields.email || '';
+    fields._template = 'table';
+    fields._url = window.location.href;
+    return fields;
+  }
+
+  // Native HTML POST bypasses fetch/CORS problems when the provider's AJAX endpoint
+  // is blocked. It opens in a new tab, so visitors don't lose their filled-in fields.
+  // This CANNOT bypass recipient activation or a provider-side delivery failure.
+  function standardSubmission(form) {
+    var clone = document.createElement('form');
+    clone.method = 'POST';
+    clone.action = standardEndpoint;
+    clone.target = '_blank';
+    clone.style.display = 'none';
+    clone.setAttribute('aria-hidden', 'true');
+    var fields = collectFields(form);
+    Object.keys(fields).forEach(function (key) {
+      var value = fields[key];
+      if (typeof value !== 'string') return;
+      var input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = key;
+      input.value = value;
+      clone.appendChild(input);
+    });
+    document.body.appendChild(clone);
+    HTMLFormElement.prototype.submit.call(clone);
+    window.setTimeout(function () { clone.remove(); }, 2000);
+  }
+
   document.addEventListener('submit', async function (event) {
     var form = event.target;
-    if (!(form instanceof HTMLFormElement) || !form.closest('main')) return;
-    if (!form.querySelector('textarea[name="message"]') ||
-        !form.querySelector('input[name="email"]') ||
-        !form.querySelector('input[name="topic"]')) return;
-
+    if (!isContactForm(form)) return;
     event.preventDefault();
     event.stopImmediatePropagation();
     if (form.dataset.ppmmwuSending === 'true') return;
     if (!form.reportValidity()) return;
-    form.dataset.ppmmwuSending = 'true';
 
     var button = form.querySelector('button[type="submit"]');
     var status = form.querySelector('[role="status"]');
-    var originalLabel = button ? button.textContent : 'SEND MESSAGE →';
+    var oldText = button ? button.textContent : 'SEND MESSAGE →';
+    var fallback = form.querySelector('[data-ppmmwu-standard-submit]');
+    if (fallback) fallback.remove();
+    form.dataset.ppmmwuSending = 'true';
     if (button) { button.disabled = true; button.textContent = 'SENDING…'; }
-    if (status) { status.textContent = 'Submitting your message…'; status.setAttribute('aria-live','polite'); }
+    if (status) {
+      status.setAttribute('aria-live', 'polite');
+      status.textContent = 'Contacting the messaging service…';
+    }
 
     var controller = new AbortController();
-    var timeout = setTimeout(function () { controller.abort(); }, 20000);
+    var timeout = window.setTimeout(function () { controller.abort(); }, 20000);
     try {
-      var fields = Object.fromEntries(new FormData(form).entries());
-      fields._subject = 'PPMMWU Website Contact Form — New Message';
-      fields._replyto = fields.email || '';
-      fields._template = 'table';
-      fields._honey = ''; // FormSubmit antispam field, left empty for real visitors.
-      fields._url = window.location.href;
-
-      var response = await fetch('https://formsubmit.co/ajax/Ian.newman@seiu521.org', {
+      var response = await fetch(ajaxEndpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify(fields),
+        body: JSON.stringify(collectFields(form)),
         signal: controller.signal
       });
-      var result = await response.json();
-      if (!response.ok || (result.success !== true && result.success !== 'true')) {
-        throw new Error(result.message || 'The form service did not accept the request.');
+      var raw = await response.text();
+      var data;
+      try { data = JSON.parse(raw); } catch (e) {
+        throw new Error('The messaging service returned an unexpected response.');
+      }
+      if (!response.ok || !data || (data.success !== true && data.success !== 'true')) {
+        var message = typeof data.message === 'string' ? data.message :
+          'The messaging service did not accept the submission (HTTP ' + response.status + ').';
+        throw new Error(message);
       }
       form.reset();
-      if (status) status.textContent = 'Your message was accepted by the form service. Thank you!';
+      if (status) status.textContent = 'Your message was accepted by the messaging service. Thank you!';
     } catch (error) {
-      // Retain all user-entered data if transport rejects or times out.
-      if (status) status.textContent =
-        'Your message could not be submitted. Please try again. If the problem continues, email Ian.newman@seiu521.org.';
+      // Never show success when an AJAX call fails, and never clear entered details.
+      var message = error && error.message ? String(error.message) : 'Unknown submission error.';
+      var isActivationError = /activation|activate|confirm.*(address|email|form)|verification/i.test(message);
+      var isRefererError = /web server|referer|referrer|_url/i.test(message);
+      if (status) {
+        if (isActivationError) {
+          status.textContent = 'This form cannot deliver messages until its owner confirms the activation email at ' + recipient + '. Please email us directly in the meantime.';
+        } else if (isRefererError) {
+          status.textContent = 'The messaging service could not verify this page. You can try its standard submission option below.';
+        } else {
+          status.textContent = 'The messaging service could not accept this message. Your entries have been kept. Try the alternate method below or email ' + recipient + '.';
+        }
+      }
+      // If AJAX is blocked, a real browser form POST may still work. It cannot
+      // bypass an unverified recipient address, and is always user-initiated.
+      if (!isActivationError && button && button.parentElement) {
+        var altButton = document.createElement('button');
+        altButton.type = 'button';
+        altButton.setAttribute('data-ppmmwu-standard-submit', '');
+        altButton.textContent = 'TRY ALTERNATE SUBMISSION ↗';
+        altButton.className = 'rounded-full border-2 border-ink bg-white px-5 py-3 text-sm font-extrabold text-purple hover:bg-yellow';
+        altButton.addEventListener('click', function () {
+          if (!form.reportValidity()) return;
+          standardSubmission(form);
+          if (status) status.textContent =
+            'A secure FormSubmit tab was opened. Finish the submission there; delivery has not yet been confirmed.';
+        });
+        button.parentElement.appendChild(altButton);
+      }
     } finally {
-      clearTimeout(timeout);
+      window.clearTimeout(timeout);
       form.dataset.ppmmwuSending = 'false';
-      if (button) { button.disabled = false; button.textContent = originalLabel; }
+      if (button) { button.disabled = false; button.textContent = oldText; }
     }
   }, true);
 })();
 `;
+
 const bargainingPopupScript = `
 (function () {
   var destination = "https://secure.ngpvan.com/jiBxJnPajUKRIzjfSsE9RQ2";
