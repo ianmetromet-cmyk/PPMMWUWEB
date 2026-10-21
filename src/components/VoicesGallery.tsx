@@ -8,7 +8,7 @@ export type Voice = {
   imageAlt: string;
   imageFit: "contain" | "cover" | "portrait";
   quote: string;
-  memberName: string;
+  nameImage: string;
   role?: string;
   team: string;
 };
@@ -48,13 +48,13 @@ export function VoicesGallery({ voices }: { voices: Voice[] }) {
             </div>
             <div className="flex flex-1 items-center justify-between gap-3 p-4">
               <div className="flex flex-col gap-1">
-                <p className="text-base font-extrabold">{voice.memberName}</p>
+                <img src={voice.nameImage} alt="Worker name graphic" className="h-7 w-auto max-w-full object-contain object-left" />
                 <p className="text-[13px] leading-[1.4] font-semibold opacity-75">Click to open quote window</p>
               </div>
               <button
                 type="button"
                 onClick={() => open(index)}
-                aria-label={`Open quote from ${voice.memberName}`}
+                aria-label="Open worker quote"
                 className="shrink-0 rounded-full border-2 border-ink bg-yellow px-3.5 py-2.5 text-sm font-extrabold text-purple transition-transform hover:-translate-y-0.5"
               >
                 OPEN QUOTE
@@ -66,14 +66,14 @@ export function VoicesGallery({ voices }: { voices: Voice[] }) {
 
       <dialog
         ref={dialogRef}
-        aria-label={active ? `Quote from ${active.memberName}` : undefined}
+        aria-label={active ? "Quote from a worker" : undefined}
         onClick={(event) => event.target === dialogRef.current && dialogRef.current?.close()}
         className="m-auto max-h-[calc(100dvh-32px)] w-[min(1309px,calc(100vw-32px))] rounded-[24px] border-2 border-line bg-cream p-0 text-ink shadow-[0px_12px_28px_0px_rgba(0,0,0,0.08)] backdrop:bg-ink/60"
       >
         {active && (
           <div className="flex flex-col gap-5 p-6">
             <div className="flex items-center justify-between gap-4">
-              <p className="text-[28px] font-extrabold">{active.memberName}</p>
+              <img src={active.nameImage} alt="Worker name graphic" className="h-10 w-auto max-w-[70%] object-contain object-left" />
               <button
                 type="button"
                 onClick={() => dialogRef.current?.close()}
@@ -98,7 +98,7 @@ export function VoicesGallery({ voices }: { voices: Voice[] }) {
                   “{active.quote}”
                 </blockquote>
                 <figcaption className="flex flex-col gap-1">
-                  <p className="text-base font-extrabold text-purple">{active.memberName}</p>
+                  <img src={active.nameImage} alt="Worker name graphic" className="h-8 w-auto max-w-full object-contain object-left" />
                   {active.role && <p className="text-sm leading-[1.4] font-bold opacity-75">{active.role}</p>}
                   <p className="text-sm leading-[1.4] font-bold opacity-75">{active.team}</p>
                 </figcaption>

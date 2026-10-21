@@ -4,8 +4,8 @@ export const metadata: Metadata = { title: "Timeline" };
 
 const timeline = [
   "In 2024, workers organized through in-person meetings outside clinics and peer-to-peer conversations, launching their authorization card campaign in October.",
-  "Support continued to grow in 2025, when workers went public in June and, amid the closure of five clinics that July, called for a stronger voice in decisions affecting their jobs and patients. In October, workers and supporters including elected officials and Dolores Huerta called on PPMM to agree to neutrality.",
-  "CEO Stacy Cross publicly acknowledged workers’ efforts to form a union. On March 25, 2026, PPMM and PPMM Workers United reached a neutrality agreement, allowing union organizers into clinic breakrooms beginning April 1. Voting began May 11, and on May 20, 2026, PPMM Workers United won its union election.",
+  "Support continued to grow in 2025, when workers went public in June and, amid the closure of five clinics that July, called for a stronger voice in decisions affecting their jobs and patients. In October, workers and supporters including elected officials and community leaders called on PPMM to agree to neutrality.",
+  "PPMM leadership publicly acknowledged workers’ efforts to form a union. On March 25, 2026, PPMM and PPMM Workers United reached a neutrality agreement, allowing union organizers into clinic breakrooms beginning April 1. Voting began May 11, and on May 20, 2026, PPMM Workers United won its union election.",
 ];
 
 export default function TimelinePage() {

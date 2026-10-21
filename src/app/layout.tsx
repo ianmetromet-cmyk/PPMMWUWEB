@@ -11,7 +11,7 @@ import "./globals.css";
 // 3. Route the existing Contact Us form to Ian.newman@seiu521.org using FormSubmit.
 // 4. Show a dismissible first-visit bargaining-principles popup.
 // 5. Connect the first Union Updates button to the approved NGP VAN form.
-// 6. Temporarily hide Hannah Tunnell’s photo while retaining her card.
+// 6. Preserve an intentionally concealed team portrait.
 // 7. Attribute September 2026 PPMM worker survey findings.
 // 8. Show the WhatsApp banner on Home and Timeline only.
 // 9. Keep Contact Us messages on-site and report verified transport status.
@@ -315,13 +315,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           }
 
 
-          /* Temporarily remove Hannah’s portrait without collapsing the team grid. */
-          main li:has(> img[alt="Portrait of Hannah Tunnell"]) {
+          /* Keep the selected team portrait concealed without exposing an identity. */
+          main li[data-portrait-hidden="true"] {
             background: radial-gradient(circle at 17% 15%, #a853f5 0, transparent 42%),
                         linear-gradient(135deg, #772ed0 0%, #930bf4 60%, #331055 100%);
             isolation: isolate;
           }
-          main li:has(> img[alt="Portrait of Hannah Tunnell"]) > img {
+          main li[data-portrait-hidden="true"] > img {
             display: none !important;
           }
 
@@ -503,7 +503,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
                 <ol>
                   <li>2024: Workers organized through in-person meetings outside clinics and peer-to-peer conversations, launching their authorization card campaign in October.</li>
                   <li>2025: Support continued to grow as workers went public in June.</li>
-                  <li>July through October 2025: Following five clinic closures in July, workers called for a stronger voice. In October, supporters including Dolores Huerta called on PPMM to agree to neutrality.</li>
+                  <li>July through October 2025: Following five clinic closures in July, workers called for a stronger voice. In October, community supporters called on PPMM to agree to neutrality.</li>
                   <li>2026: A neutrality agreement was reached on March 25; organizers entered clinics on April 1; voting began May 11; workers won their union election May 20.</li>
                 </ol>
               </figcaption>

@@ -1,74 +1,74 @@
 import type { Metadata } from "next";
 import type { StaticImageData } from "next/image";
-import allisonChung from "@/assets/team/allison-chung.png";
-import josefinaRodriguez from "@/assets/team/josefina-rodriguez.png";
-import lauraFloresGalicia from "@/assets/team/laura-flores-galicia.jpg";
-import ryahIssa from "@/assets/team/ryah-issa.png";
-import aliyaCaler from "@/assets/voices/aliya-caler.jpg";
-import leticiaOrnelas from "@/assets/voices/leticia-ornelas.jpg";
-import nancyGriffith from "@/assets/voices/nancy-griffith.jpg";
+import teamPortrait01 from "@/assets/team/t01.png";
+import teamPortrait05 from "@/assets/team/t05.png";
+import teamPortrait06 from "@/assets/team/t06.jpg";
+import teamPortrait09 from "@/assets/team/t09.png";
+import voicePortrait01 from "@/assets/voices/v01.jpg";
+import voicePortrait02 from "@/assets/voices/v02.jpg";
+import voicePortrait03 from "@/assets/voices/v03.jpg";
 import { ContactForm } from "@/components/ContactForm";
 import { PillLink } from "@/components/PillLink";
 import { type Voice, VoicesGallery } from "@/components/VoicesGallery";
 import { externalLinks } from "@/lib/site";
 
-export const metadata: Metadata = { title: "Contact Us" };
+export const metadata: Metadata = { title: "Contact Us", robots: "noindex, noimageindex, follow" };
 
-function portrait(image: StaticImageData, name: string) {
-  return { image, imageAlt: `Portrait of ${name}`, imageFit: "portrait" } as const;
+function portrait(image: StaticImageData) {
+  return { image, imageAlt: "PPMMWU worker portrait", imageFit: "portrait" } as const;
 }
 
 const voices: Voice[] = [
   {
-    ...portrait(aliyaCaler, "Aliya Caler"),
-    memberName: "Aliya Caler",
+    ...portrait(voicePortrait01),
+    nameImage: "/nameplates/n10-purple.png",
     role: "Clinician, Oakland",
     team: "PPMMWU Member Action Team Member",
     quote:
       "I do this work for people in our communities who too often feel unheard, disrespected, or undervalued. Everyone deserves compassionate, judgment-free care and the freedom to make decisions about their own lives and futures. Our patients and coworkers deserve the same compassion and respect that drive our mission. When workers are respected, valued, and supported, we can provide stronger care and build a stronger future for the communities we serve. The mission runs on us.",
   },
   {
-    ...portrait(ryahIssa, "Ryah Issa"),
-    memberName: "Ryah Issa",
+    ...portrait(teamPortrait09),
+    nameImage: "/nameplates/n07-purple.png",
     role: "RN, San Jose Eastside",
     team: "PPMMWU Bargaining Team Member",
     quote:
       "Our community of workers and patients are seeking safe, and supportive working conditions, and transparency in leadership decisions. Our working conditions directly impact the care we provide. Our voice is crucial to strengthen and shape a stronger and sustainable future of Planned Parenthood Mar Monte Workers United run clinics: reproductive justice and access to quality health care matters!",
   },
   {
-    ...portrait(josefinaRodriguez, "Josefina Rodriguez"),
-    memberName: "Josefina Rodriguez",
+    ...portrait(teamPortrait05),
+    nameImage: "/nameplates/n02-purple.png",
     role: "HSS II, Fulton",
     team: "PPMMWU Bargaining Team Member",
     quote:
       "I do this work for all the individuals who sit in a Planned Parenthood waiting room, pregnant, scared, and uncertain about the future. Someone was there for me without judgment. Every patient deserves compassion, dignity, and someone they can trust. The mission runs on us.",
   },
   {
-    ...portrait(leticiaOrnelas, "Leticia Ornelas"),
-    memberName: "Leticia Ornelas",
+    ...portrait(voicePortrait02),
+    nameImage: "/nameplates/n11-purple.png",
     team: "PPMMWU Member Action Team",
     quote:
       "New hires at Planned Parenthood Mar Monte are routinely placed on the clinic floor without adequate training. Leadership decisions that impact staffing and constant turnover leave our community unprepared for critical responsibilities. When a young patient comes to us scared or facing an important, deeply personal healthcare decision, proper training and mentorship are essential to supporting our coworkers and protecting our patients. The mission runs on us.",
   },
   {
-    ...portrait(allisonChung, "Allison Chung"),
-    memberName: "Allison Chung",
+    ...portrait(teamPortrait01),
+    nameImage: "/nameplates/n04-purple.png",
     role: "Clinician, Sacramento B St",
     team: "PPMMWU Bargaining Team Member",
     quote:
       "I do this work because it’s my livelihood, and like my coworkers, I deserve a job that provides stability and a future I can count on. Keeping our clinics strong means keeping experienced workers from leaving. We need fair compensation, manageable workloads, and working conditions that make people want to stay. Investing in a sustainable workforce means investing in the long-term future of our clinics and the patients who depend on them.",
   },
   {
-    ...portrait(lauraFloresGalicia, "Laura Flores Galicia"),
-    memberName: "Laura Flores Galicia",
+    ...portrait(teamPortrait06),
+    nameImage: "/nameplates/n08-purple.png",
     role: "HSS, Sacramento B St",
     team: "PPMMWU Bargaining Team Member",
     quote:
       "It’s more important than ever to unite with our community and ensure that our employer realizes that we are human beings, who truly believe in our mission, before many more good people leave our team.",
   },
   {
-    ...portrait(nancyGriffith, "Nancy Griffith"),
-    memberName: "Nancy Griffith",
+    ...portrait(voicePortrait03),
+    nameImage: "/nameplates/n12-purple.png",
     role: "Nurse Practitioner, Roseville",
     team: "PPMMWU Member Action Team",
     quote:

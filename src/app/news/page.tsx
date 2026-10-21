@@ -53,7 +53,7 @@ const bottomArticles: Article[] = [
   {
     image: sfChronicle,
     labelTop: 154,
-    headline: "San Francisco Chronicle: Workers at Planned Parenthood's largest affiliate are unionizing, citing Trump cuts",
+    headline: "San Francisco Chronicle: Workers at Planned Parenthood's largest affiliate are unionizing, citing federal funding cuts",
     href: "https://www.sfchronicle.com/politics/article/planned-parenthood-union-medicaid-trump-22249797.php",
   },
 ];
