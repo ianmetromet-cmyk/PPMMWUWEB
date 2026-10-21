@@ -79,7 +79,7 @@ const voices: Voice[] = [
 export default function ContactPage() {
   return (
     <div className="mx-auto flex max-w-[1440px] flex-col px-5 pt-12 pb-24 md:px-[72px]">
-      <h1 className="text-[clamp(36px,4.5vw,52px)] font-black">HOW CAN WE HELP?</h1>
+      <h1 className="text-[clamp(36px,4.5vw,52px)] font-purple">HOW CAN WE HELP?</h1>
 
       <section
         aria-label="Send a message"
