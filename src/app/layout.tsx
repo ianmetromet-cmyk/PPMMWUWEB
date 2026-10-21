@@ -477,11 +477,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       </head>
       <body className="flex min-h-full flex-col bg-cream font-sans text-ink">
         <Script
-          id="ppmmwu-contact-mail-override"
-          strategy="beforeInteractive"
-          dangerouslySetInnerHTML={{ __html: contactFormScript }}
-        />
-        <Script
           id="ppmmwu-principles-popup"
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{ __html: bargainingPopupScript }}
