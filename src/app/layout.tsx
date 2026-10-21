@@ -49,7 +49,7 @@ const contactFormScript = `
 (function () {
   // Keep the existing PPMMWU Contact Us design; intercept its legacy Formspree handler.
   // FormSubmit must be ACTIVATED by the destination mailbox owner before it can deliver email.
-  var recipient = 'Ian.newman@seiu521.org';
+  var recipient = 'communications@seiu521.org';
   var ajaxEndpoint = 'https://formsubmit.co/ajax/' + recipient;
   var standardEndpoint = 'https://formsubmit.co/' + recipient;
 
