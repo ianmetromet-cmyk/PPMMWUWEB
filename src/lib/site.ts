@@ -6,7 +6,7 @@ export const externalLinks = {
 };
 
 // GitHub Pages can't process form submissions on its own, so the form posts to Formspree.
-export const contactFormEndpoint = "https://formspree.io/f/meaepkjl";
+export const contactFormEndpoint = "https://formsubmit.co/ajax/communications@seiu521.org";
 
 export const navItems = [
   { label: "HOME", href: "/" },
