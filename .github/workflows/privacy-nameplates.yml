@@ -1,0 +1,245 @@
+name: Rasterize member names and protect indexing
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/privacy-nameplates.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  apply-name-privacy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install image rasterizer
+        run: python -m pip install Pillow
+      - name: Replace name text with PNG graphics, anonymize asset paths, and protect pages
+        shell: bash
+        run: |
+          python - <<'PYPRIVACY'
+          #!/usr/bin/env python3
+          """One-time PPMMWU privacy update. Run from the PPMMWUWEB checkout."""
+          from __future__ import annotations
+
+          import re
+          import shutil
+          from pathlib import Path
+          from PIL import Image, ImageDraw, ImageFont
+
+          ROOT = Path.cwd()
+          ABOUT = ROOT / 'src/app/about/page.tsx'
+          CONTACT = ROOT / 'src/app/contact/page.tsx'
+          GALLERY = ROOT / 'src/components/VoicesGallery.tsx'
+          TIMELINE = ROOT / 'src/app/timeline/page.tsx'
+          LAYOUT = ROOT / 'src/app/layout.tsx'
+          NEWS = ROOT / 'src/app/news/page.tsx'
+          NAMES_DIR = ROOT / 'public/nameplates'
+
+
+          def require(test, message):
+              if not test:
+                  raise RuntimeError(message)
+
+
+          def write(path, value):
+              path.write_text(value, encoding='utf8')
+
+
+          def replace_once(value, original, new, label):
+              require(original in value, f'{label}: expected pattern not found')
+              return value.replace(original, new)
+
+
+          require(all(p.is_file() for p in [ABOUT, CONTACT, GALLERY, TIMELINE, LAYOUT, NEWS]), 'Run in the PPMMWUWEB repository root')
+          about = ABOUT.read_text(encoding='utf8')
+          contact = CONTACT.read_text(encoding='utf8')
+          gallery = GALLERY.read_text(encoding='utf8')
+          layout = LAYOUT.read_text(encoding='utf8')
+          timeline = TIMELINE.read_text(encoding='utf8')
+          news = NEWS.read_text(encoding='utf8')
+
+          team_pattern = re.compile(r'(?m)^  \{ name: "([^"]+)", role: "([^"]+)", photo: (\w+) \},$')
+          team_rows = team_pattern.findall(about)
+          voice_names = re.findall(r'memberName: "([^"]+)",', contact)
+          require(len(team_rows) >= 5 and len(voice_names) >= 4, 'Expected the original About/Voices member rosters; site may already be updated')
+
+          # Preserve the existing decision to conceal a particular member's portrait, without putting the name in the built page.
+          hidden_match = re.search(r'Portrait of ([A-Z][^"\]]+)"\]\)', layout)
+          hidden_name = hidden_match.group(1) if hidden_match else None
+          all_names = list(dict.fromkeys([name for name, _role, _photo in team_rows] + voice_names))
+          name_to_code = {name: f'n{i:02d}' for i, name in enumerate(all_names, start=1)}
+
+          # Generate transparent name images rather than HTML/text/SVG strings. Two color variants preserve the established site contrast.
+          NAMES_DIR.mkdir(parents=True, exist_ok=True)
+          font_path = '/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf'
+          font_path_alt = '/usr/share/fonts/truetype/liberation2/LiberationSans-Bold.ttf'
+          font_path = font_path if Path(font_path).exists() else font_path_alt
+          for name in all_names:
+              size = 42
+              while True:
+                  font = ImageFont.truetype(font_path, size=size)
+                  box = font.getbbox(name)
+                  width = box[2] - box[0]
+                  if width <= 740 or size <= 26:
+                      break
+                  size -= 1
+              w = max(80, width + 12)
+              h = 66
+              for variant, rgb in [('light', (255, 255, 255)), ('purple', (119, 46, 208))]:
+                  pic = Image.new('RGBA', (w, h), (0, 0, 0, 0))
+                  draw = ImageDraw.Draw(pic)
+                  draw.text((6 - box[0], (h - (box[3] - box[1])) // 2 - box[1]), name, font=font, fill=(*rgb, 255))
+                  pic.save(NAMES_DIR / f'{name_to_code[name]}-{variant}.png', optimize=True)
+
+          # Rename portraits to non-identifying filenames; preserve pixels exactly.
+          # Replace import aliases as well so personal names do not leak into compiled JS symbols.
+          file_aliases = {}
+          file_paths = {}
+          for index, kind in enumerate(['team', 'voices']):
+              for source in [about, contact]:
+                  for alias, existing in re.findall(r'import (\w+) from "@/assets/' + kind + r'/([^\"]+)";', source):
+                      key = (kind, existing)
+                      if key not in file_paths:
+                          number = sum(1 for k in file_paths if k[0] == kind) + 1
+                          ext = Path(existing).suffix
+                          file_paths[key] = f'{"t" if kind == "team" else "v"}{number:02d}{ext}'
+                          file_aliases[alias] = f'{"team" if kind == "team" else "voice"}Portrait{number:02d}'
+                      else:
+                          # Identical original image sometimes imported in another page; use the first alias mapping.
+                          new_name = file_paths[key]
+                          idx = Path(new_name).stem[1:]
+                          file_aliases[alias] = f'{"team" if kind == "team" else "voice"}Portrait{idx}'
+          require(len(file_paths) >= 10, 'Could not identify portrait imports')
+
+          for (kind, existing), anonymous in file_paths.items():
+              old_rel = f'@/assets/{kind}/{existing}'
+              new_rel = f'@/assets/{kind}/{anonymous}'
+              about = about.replace(old_rel, new_rel)
+              contact = contact.replace(old_rel, new_rel)
+
+          for old_alias, new_alias in sorted(file_aliases.items(), key=lambda it: -len(it[0])):
+              about = re.sub(r'\b' + re.escape(old_alias) + r'\b', new_alias, about)
+              contact = re.sub(r'\b' + re.escape(old_alias) + r'\b', new_alias, contact)
+
+          # About: replace every real name with an image path and use private alt text.
+          def replace_team(m):
+              name, role, photo = m.groups()
+              img = f'/nameplates/{name_to_code[name]}-light.png'
+              hidden = ', hiddenPhoto: true' if name == hidden_name else ''
+              return f'  {{ nameImage: "{img}", role: "{role}", photo: {photo}{hidden} }},'
+          about, cnt = team_pattern.subn(replace_team, about)
+          require(cnt == len(team_rows), 'Failed to update all team members')
+          about = replace_once(about, '  name: string;', '  nameImage: string;\n  hiddenPhoto?: boolean;', 'About data type')
+          about = replace_once(about, 'alt={`Portrait of ${member.name}`}', 'alt="PPMMWU bargaining team member portrait"', 'About image alt')
+          about = replace_once(about, 'key={member.name}', 'key={member.nameImage}', 'About react key')
+          about = replace_once(about, '<li className="relative h-[320px] overflow-hidden rounded-[18px] bg-purple">', '<li data-portrait-hidden={member.hiddenPhoto ? "true" : undefined} className="relative h-[320px] overflow-hidden rounded-[18px] bg-purple">', 'About private portrait')
+          start = about.index('      <Image\n        src={member.photo}')
+          end = about.index('      />', start) + len('      />')
+          img_block = about[start:end]
+          about = about[:start] + '      {!member.hiddenPhoto && (\n' + img_block + '\n      )}' + about[end:]
+          about = replace_once(about, '<p className="text-[17px] font-bold text-white">{member.name}</p>', '<img src={member.nameImage} alt="Bargaining team member name graphic" className="h-7 w-auto max-w-full object-contain object-left" />', 'About name label')
+          about = replace_once(about, 'export const metadata: Metadata = { title: "About" };', 'export const metadata: Metadata = { title: "About", robots: "noindex, noimageindex, follow" };', 'About indexing policy')
+
+          # Contact: images replace names in the employee quotes, alt and dialog accessible labels.
+          contact = replace_once(contact, 'function portrait(image: StaticImageData, name: string) {', 'function portrait(image: StaticImageData) {', 'Contact helper signature')
+          contact = replace_once(contact, 'imageAlt: `Portrait of ${name}`', 'imageAlt: "PPMMWU worker portrait"', 'Contact portrait alt')
+          for name in voice_names:
+              contact, n1 = re.subn(r'(\.\.\.portrait\(\w+), "' + re.escape(name) + r'"\)', r'\1)', contact)
+              require(n1 == 1, 'Contact portrait reference not found')
+              contact = replace_once(contact, f'memberName: "{name}"', f'nameImage: "/nameplates/{name_to_code[name]}-purple.png"', 'Contact name')
+          contact = replace_once(contact, 'export const metadata: Metadata = { title: "Contact Us" };', 'export const metadata: Metadata = { title: "Contact Us", robots: "noindex, noimageindex, follow" };', 'Contact indexing policy')
+
+          # VoicesGallery: all name strings now remain in PNG pixels, not HTML, alt text, buttons, or dialog aria labels.
+          gallery = replace_once(gallery, '  memberName: string;', '  nameImage: string;', 'Gallery data type')
+          gallery = replace_once(gallery, '<p className="text-base font-extrabold">{voice.memberName}</p>', '<img src={voice.nameImage} alt="Worker name graphic" className="h-7 w-auto max-w-full object-contain object-left" />', 'Gallery card name')
+          gallery = replace_once(gallery, 'aria-label={`Open quote from ${voice.memberName}`}', 'aria-label="Open worker quote"', 'Gallery open button')
+          gallery = replace_once(gallery, 'aria-label={active ? `Quote from ${active.memberName}` : undefined}', 'aria-label={active ? "Quote from a worker" : undefined}', 'Gallery dialog label')
+          gallery = replace_once(gallery, '<p className="text-[28px] font-extrabold">{active.memberName}</p>', '<img src={active.nameImage} alt="Worker name graphic" className="h-10 w-auto max-w-[70%] object-contain object-left" />', 'Gallery dialog heading')
+          gallery = replace_once(gallery, '<p className="text-base font-extrabold text-purple">{active.memberName}</p>', '<img src={active.nameImage} alt="Worker name graphic" className="h-8 w-auto max-w-full object-contain object-left" />', 'Gallery credit')
+          require('memberName' not in gallery and 'memberName' not in contact, 'A gallery text name remains')
+
+          # Timeline: remove names of individuals from text and screen-reader-only captions.
+          # The public-history meaning is retained without individual identifiers.
+          for name in all_names:
+              layout = layout.replace(name, 'a PPMMWU member')
+              timeline = timeline.replace(name, 'a PPMMWU member')
+          # Name patterns below handle the named public supporters and employer officer in the chronology without embedding names in the published patch.
+          public_supporter = r'\bDolores\s+Huerta\b'
+          public_executive = r'\bStacy\s+Cross\b'
+          timeline = re.sub(public_supporter, 'community leaders', timeline)
+          timeline = re.sub(public_executive, 'PPMM leadership', timeline)
+          layout = re.sub(public_supporter, 'community leaders', layout)
+          layout = re.sub(public_executive, 'PPMM leadership', layout)
+          # Clean up phrases created by substitution for accurate grammar.
+          timeline = timeline.replace('including elected officials and community leaders', 'including elected officials and community leaders')
+          timeline = timeline.replace('CEO PPMM leadership publicly acknowledged', 'PPMM leadership publicly acknowledged')
+          layout = layout.replace('supporters including community leaders called', 'community supporters called')
+
+          # Replace name-dependent CSS selector with a generic data attribute; the hidden portrait remains hidden.
+          layout, selector_count = re.subn(r'main li:has\(> img\[alt="Portrait of [^\"]+"\]\)', 'main li[data-portrait-hidden="true"]', layout)
+          require(selector_count >= 2, 'Private-portrait layout selectors were not found')
+          layout = re.sub(r'/\* Temporarily remove [^*]+ portrait without collapsing the team grid\. \*/', '/* Keep the selected team portrait concealed without exposing an identity. */', layout)
+          layout = re.sub(r'(?m)^// 6\. Temporarily hide .*$', '// 6. Preserve an intentionally concealed team portrait.', layout)
+
+          # Avoid human personal names in the alt text of third-party article screenshots.
+          news = news.replace('citing Trump cuts', 'citing federal funding cuts')
+
+          # Remove names from any remaining published TypeScript source content, or fail rather than silently leak.
+          for source_path, content in [(ABOUT, about), (CONTACT, contact), (GALLERY, gallery), (TIMELINE, timeline), (LAYOUT, layout), (NEWS, news)]:
+              for name in all_names:
+                  require(name not in content, f'Private member name still appears in {source_path}: {name}')
+              require(not re.search(public_supporter + '|' + public_executive, content), f'Historic personal name still appears in {source_path}')
+
+          # Write source files and then rename unmodified image bytes. Git will record renamed assets.
+          for source_path, content in [(ABOUT, about), (CONTACT, contact), (GALLERY, gallery), (TIMELINE, timeline), (LAYOUT, layout), (NEWS, news)]:
+              write(source_path, content)
+          for (kind, existing), anonymous in file_paths.items():
+              old = ROOT / 'src/assets' / kind / existing
+              new = ROOT / 'src/assets' / kind / anonymous
+              require(old.is_file(), f'Portrait asset missing: {old}')
+              require(not new.exists(), f'Portrait destination already exists: {new}')
+              old.rename(new)
+
+          print(f'Privacy update complete: {len(all_names)} unique names converted to raster PNG labels; {len(file_paths)} portrait files renamed.')
+          print('About and Contact now have noindex/noimageindex; existing Google results require recrawl/removal request.')
+          PYPRIVACY
+      - name: Verify production build before committing changes
+        run: |
+          npm ci
+          npm run build
+        env:
+          PAGES_BASE_PATH: ""
+      - name: Commit privacy changes
+        id: commit
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A src public/nameplates
+          if git diff --staged --quiet; then
+            echo 'changed=0' >> "$GITHUB_OUTPUT"
+            echo 'No changes to commit.'
+          else
+            git commit -m 'Protect worker names from public indexing'
+            git push origin HEAD:main
+            echo 'changed=1' >> "$GITHUB_OUTPUT"
+          fi
+      - name: Deploy verified privacy update
+        if: steps.commit.outputs.changed == '1'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh workflow run deploy.yml --ref main
