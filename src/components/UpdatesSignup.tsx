@@ -39,26 +39,26 @@ export function UpdatesSignup() {
   return (
     <section
       aria-labelledby="updates-signup"
-      className="relative overflow-hidden rounded-[24px] border-3 border-ink bg-purple-deep"
+      className="relative overflow-hidden rounded-[20px] border-3 border-ink bg-purple-deep md:rounded-[24px]"
     >
-      <div className="absolute inset-y-0 left-0 hidden w-[28%] lg:block">
+      <div className="absolute inset-y-0 left-0 hidden w-[min(220px,22%)] md:block">
         <Image
           src={featuredPhoto}
           alt=""
           fill
-          sizes="28vw"
+          sizes="220px"
           className="object-cover object-top grayscale"
         />
         <div className="absolute inset-0 bg-purple-deep/60 mix-blend-multiply" />
         <div className="absolute inset-0 bg-linear-to-r from-transparent via-purple-deep/40 to-purple-deep" />
       </div>
 
-      <div className="relative flex flex-col gap-6 p-6 md:p-10 lg:ml-[23%]">
-        <div className="flex flex-col gap-2">
-          <h2 id="updates-signup" className="text-[clamp(28px,3.4vw,44px)] leading-tight font-black text-snow">
+      <div className="relative flex flex-col gap-4 p-5 md:gap-5 md:p-8 md:pl-[min(240px,26%)]">
+        <div className="flex flex-col gap-1.5">
+          <h2 id="updates-signup" className="text-[clamp(20px,2.2vw,32px)] leading-tight font-black text-snow">
             DON’T MISS A BARGAINING UPDATE.
           </h2>
-          <p className="text-base leading-[1.4] font-bold text-snow/90 md:text-lg">
+          <p className="text-sm leading-[1.4] font-bold text-snow/90 md:text-base">
             Get campaign news, bargaining alerts and actions from PPMM Workers United.
           </p>
         </div>
@@ -66,7 +66,7 @@ export function UpdatesSignup() {
         <form onSubmit={handleSubmit} className="flex flex-col gap-3">
           <input type="hidden" name="_subject" value="Bargaining update signup" />
           <input type="hidden" name="form" value="Bargaining update signup" />
-          <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-[1fr_1fr_1fr_auto]">
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_1fr_auto] lg:items-center">
             <label>
               <span className="sr-only">Email address</span>
               <input name="email" type="email" required placeholder="Email address" className={inputClasses} />
@@ -82,7 +82,7 @@ export function UpdatesSignup() {
             <button
               type="submit"
               disabled={status === "sending"}
-              className="h-[52px] rounded-full border-3 border-ink bg-yellow px-6 text-lg font-extrabold whitespace-nowrap text-purple transition-transform hover:-translate-y-0.5 disabled:opacity-60"
+              className="h-[48px] rounded-full border-3 border-ink bg-yellow px-5 text-base font-extrabold whitespace-nowrap text-purple transition-transform hover:-translate-y-0.5 disabled:opacity-60 sm:h-[52px] sm:px-6 sm:text-lg lg:col-auto"
             >
               {status === "sending" ? "SIGNING UP…" : "KEEP ME UPDATED →"}
             </button>

@@ -15,7 +15,7 @@ const priorities: Priority[] = [
   {
     stat: "76%",
     title: "FAIR WAGES",
-    description: "Workers ranked higher wages their #1 priority.",
+    description: "You cannot ask workers to sustain the mission on wages that do not sustain their communities.",
     card: "bg-purple/15",
     accent: "text-purple-deep",
     icon: (
@@ -30,7 +30,7 @@ const priorities: Priority[] = [
   {
     stat: "90.1%",
     title: "JOB SECURITY",
-    description: "Strong layoff and recall rights are essential.",
+    description: "Continuity of care starts with protecting experienced workers, including strong layoff and recall rights.",
     card: "bg-pink/15",
     accent: "text-pink",
     icon: (
@@ -43,7 +43,7 @@ const priorities: Priority[] = [
   {
     stat: "83.4%",
     title: "JUST CAUSE",
-    description: "Fair treatment and consistent standards.",
+    description: "Dignity and fairness should not stop at the clinic doors.",
     card: "bg-blue/15",
     accent: "text-blue",
     icon: (
@@ -56,7 +56,7 @@ const priorities: Priority[] = [
   {
     stat: "77.3%",
     title: "STAFFING",
-    description: "Adequate staffing means better care.",
+    description: "You cannot deliver the mission short-staffed. Adequate staffing means stronger care.",
     card: "bg-yellow/25",
     accent: "text-purple",
     icon: (
@@ -75,8 +75,12 @@ export function PrioritiesPanel() {
   return (
     <section aria-labelledby="priorities" className="flex flex-col gap-6">
       <h2 id="priorities" className="text-[clamp(26px,3.2vw,42px)] font-black text-purple">
-        WHAT WORKERS NEED TO STRENGTHEN OUR MISSION
+        WHAT PPMM LEADERSHIP CAN DO TO LIVE THE MISSION
       </h2>
+      <p className="max-w-[760px] text-lg leading-snug font-bold">
+        Workers named these priorities. If PPMM leadership supports the community that carries out care, they
+        strengthen the mission itself.
+      </p>
       <ul className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
         {priorities.map((item) => (
           <li key={item.title} className={`flex flex-col gap-3 rounded-[18px] p-6 ${item.card}`}>
@@ -91,6 +95,9 @@ export function PrioritiesPanel() {
           </li>
         ))}
       </ul>
+      <p className="text-sm font-semibold text-muted">
+        Based on survey information collected directly from PPMM workers in September 2026.
+      </p>
     </section>
   );
 }

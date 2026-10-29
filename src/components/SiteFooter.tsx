@@ -11,7 +11,7 @@ export function SiteFooter() {
             </p>
           </div>
           <p className="text-xl font-bold text-white md:text-[25px]">
-            Our work. <span className="text-yellow">Our mission</span>. Our power.
+            Our care. <span className="text-yellow">Our mission</span>. Our power.
           </p>
         </div>
       </div>

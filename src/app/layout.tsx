@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     template: "%s | PPMMWU",
   },
   description:
-    "Bargaining updates, member stories, campaign priorities, and ways to get involved with Planned Parenthood Mar Monte Workers United.",
+    "How PPMM leadership can invest in the workers who carry out the mission. Bargaining updates, member stories, and ways to get involved with Planned Parenthood Mar Monte Workers United.",
 };
 
 const contactFormScript = `

@@ -1,6 +1,5 @@
-import Image from "next/image";
 import Link from "next/link";
-import heroBanner from "@/assets/home/hero-banner.png";
+import { HomeHero } from "@/components/HomeHero";
 import { TitleBanner } from "@/components/TitleBanner";
 import { UnionUpdate } from "@/components/UnionUpdate";
 import { UpdatesSignup } from "@/components/UpdatesSignup";
@@ -35,8 +34,8 @@ const resourceCards = [
   },
   {
     eyebrow: "GET INVOLVED",
-    title: "BUILD POWER AT YOUR CLINIC",
-    body: "JOIN YOUR COWORKERS WHO ARE ORGANIZING TO STRENGTHEN YOUR UNION!",
+    title: "STRONGER WORKFORCE. STRONGER CARE.",
+    body: "ASK PPMM LEADERSHIP TO INVEST IN THE WORKERS WHO CARRY OUT THE MISSION.",
     link: "JOIN THE MEMBER ACTION TEAM →",
     href: externalLinks.memberActionTeam,
     card: "bg-yellow border-ink",
@@ -52,14 +51,11 @@ export default function HomePage() {
   return (
     <>
       <div className="h-1 w-full rounded-full bg-pink" />
-      <Image
-        src={heroBanner}
-        alt="The mission runs on us! PPMM Workers United — People. Care. Power."
-        priority
-        className="h-auto w-full"
-      />
+      <div className="pt-4 md:pt-6">
+        <HomeHero />
+      </div>
 
-      <div className="mx-auto flex max-w-[1440px] flex-col px-5 pt-12 pb-24 md:px-10">
+      <div className="mx-auto flex max-w-[1440px] flex-col px-5 pt-8 pb-24 md:px-10 md:pt-10">
         <section aria-labelledby="union-updates">
           <TitleBanner>
             <span id="union-updates">UNION UPDATES</span>

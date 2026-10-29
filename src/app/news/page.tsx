@@ -115,11 +115,10 @@ export default function NewsPage() {
 
       <aside className="mt-12 flex flex-col gap-6 rounded-[20px] bg-ink p-6 lg:flex-row lg:items-center lg:justify-between">
         <div className="flex max-w-[760px] flex-col gap-2.5">
-          <p className="text-2xl font-extrabold text-cream md:text-[32px]">
-            Ready to move from election to action?
-          </p>
+          <p className="text-2xl font-extrabold text-cream md:text-[32px]">The mission runs on us.</p>
           <p className="text-sm leading-[1.4] font-bold text-snow">
-            Join the Member Action Team, stay updated on bargaining progress, and connect with the organizing team.
+            PPMM leadership can sustain the workforce that has sustained patient care. Stay connected as bargaining
+            moves, and bring a coworker with you.
           </p>
         </div>
         <PillLink href={externalLinks.memberActionTeam} withArrow className="shrink-0 self-start px-[18px] lg:self-auto">
@@ -145,10 +144,10 @@ export default function NewsPage() {
           </a>
           <div className="flex flex-col gap-[1.2em] text-[clamp(22px,2.5vw,35px)] font-black italic md:pt-2">
             <p>
-              We recently experienced a victory at our San Jose clinic which demonstrates the power of
-              bringing our union together!
+              Workers at our San Jose clinic acted together and won. That is what it looks like when participation
+              produces a result.
             </p>
-            <p>Click on the flyer to download and share with your coworkers!</p>
+            <p>Click the flyer to download and share with your coworkers.</p>
           </div>
         </div>
       </section>

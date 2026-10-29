@@ -106,9 +106,10 @@ export default function ContactPage() {
 
       <aside className="mt-24 flex flex-col gap-6 rounded-[24px] bg-ink p-7 lg:flex-row lg:items-center lg:justify-between">
         <div className="flex max-w-[760px] flex-col gap-2.5">
-          <p className="text-2xl font-extrabold text-cream md:text-[32px]">Ready to build power with coworkers?</p>
+          <p className="text-2xl font-extrabold text-cream md:text-[32px]">We believe in the mission.</p>
           <p className="text-lg leading-[1.4] font-bold text-white">
-            Join the Member Action Team to share updates, connect your worksite, and prepare for collective action.
+            We’re advocating for the people who carry it out. The Member Action Team is how coworkers stay in touch
+            and take a small next step at their clinic.
           </p>
         </div>
         <PillLink href={externalLinks.memberActionTeam} className="self-start px-5 lg:self-auto" textSize="text-lg">
