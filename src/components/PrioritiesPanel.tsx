@@ -31,8 +31,8 @@ const priorities: Priority[] = [
     stat: "90.1%",
     title: "JOB SECURITY",
     description: "Continuity of care starts with protecting experienced workers, including strong layoff and recall rights.",
-    card: "bg-pink/15",
-    accent: "text-pink",
+    card: "bg-purple-deep/15",
+    accent: "text-purple",
     icon: (
       <svg {...iconProps}>
         <path d="M24 4 7 10v12c0 11 7.4 19.6 17 22 9.6-2.4 17-11 17-22V10z" fill="currentColor" />

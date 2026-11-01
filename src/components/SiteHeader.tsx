@@ -30,7 +30,7 @@ export function SiteHeader() {
                   {item.label}
                   <span
                     className={`h-1 w-full rounded-full transition-colors ${
-                      active ? "bg-pink" : "bg-transparent group-hover:bg-pink/40"
+                      active ? "bg-purple" : "bg-transparent group-hover:bg-purple/40"
                     }`}
                   />
                 </Link>

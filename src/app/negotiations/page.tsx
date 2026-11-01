@@ -1,80 +1,123 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
-import josefinaRodriguez from "@/assets/team/josefina-rodriguez.png";
+import teamPortrait05 from "@/assets/team/t05.png";
 import { PillLink } from "@/components/PillLink";
 import { externalLinks } from "@/lib/site";
 
-export const metadata: Metadata = { title: "2026 Negotiations" };
+export const metadata: Metadata = { title: "2027 Negotiations" };
 
-const quote = {
-  memberName: "Josefina Rodriguez",
+const member = {
+  nameImage: "/nameplates/n02-purple.png",
   role: "HSS II, Fulton",
   team: "PPMMWU Bargaining Team Member",
-  text: "I do this work for all the individuals who sit in a Planned Parenthood waiting room, pregnant, scared, and uncertain about the future. Someone was there for me without judgment. Every patient deserves compassion, dignity, and someone they can trust. The mission runs on us.",
 };
+
+const preparationQuote =
+  "A strong contract starts with an organized membership. Every conversation, every voice, and every action brings us closer to winning the wages, protections, and working conditions we deserve.";
+
+function EventPanel({
+  title,
+  date,
+  message,
+  action,
+  surface,
+}: {
+  title: string;
+  date: string;
+  message: string;
+  action: string;
+  surface: "bg-purple" | "bg-purple-deep";
+}) {
+  return (
+    <article className={`flex h-full flex-col justify-between gap-8 rounded-[28px] p-8 md:p-10 lg:p-12 ${surface}`}>
+      <div className="flex flex-col gap-4">
+        <h2 className="text-xl leading-tight font-black tracking-[0.03em] text-yellow md:text-2xl">{title}</h2>
+        <p className="text-xl font-black text-cream md:text-2xl">{date}</p>
+        <p className="max-w-[36ch] text-xl leading-snug font-extrabold text-cream md:text-2xl">{message}</p>
+      </div>
+      <PillLink
+        href={externalLinks.openBargainingRsvp}
+        withArrow
+        textSize="text-base md:text-lg"
+        textColor="text-purple-deep"
+        className="w-full justify-center px-6 text-center text-balance"
+      >
+        {action}
+      </PillLink>
+    </article>
+  );
+}
 
 export default function NegotiationsPage() {
   return (
-    <div className="mx-auto flex max-w-[1440px] flex-col gap-10 px-5 py-16 md:px-[72px]">
-      <header className="flex flex-col gap-4">
-        <p className="text-lg font-black text-pink">OPEN BARGAINING · CAMPAIGN KICKOFF</p>
-        <h1 className="text-[clamp(38px,5vw,54px)] leading-[0.98] font-black text-purple">2026 NEGOTIATIONS</h1>
-        <p className="max-w-[760px] text-lg leading-[1.35] font-extrabold md:text-2xl">
-          We believe in the mission. We’re advocating for the people who carry it out. If PPMM leadership values
-          reproductive healthcare, this contract is how they invest in the workers who provide it.
-        </p>
+    <>
+      <header className="mx-auto max-w-[1440px] px-5 pt-10 md:px-[72px] md:pt-16">
+        <h1 className="text-[clamp(40px,5.5vw,64px)] leading-[0.98] font-black">
+          <span className="text-ink">Get Ready for </span>
+          <span className="text-purple">2027 Negotiations!</span>
+          <br />
+          <span className="mt-2 inline-block bg-yellow px-2 text-purple-deep">Register Now!</span>
+        </h1>
       </header>
 
-      <section aria-labelledby="bargaining-voice" className="flex flex-col gap-6">
-        <h2 id="bargaining-voice" className="text-[clamp(26px,3.2vw,42px)] font-black text-purple">
-          A VOICE FROM YOUR BARGAINING TEAM
-        </h2>
-        <div className="grid items-stretch gap-6 lg:grid-cols-[minmax(280px,420px)_1fr]">
-          <div className="overflow-hidden rounded-[24px] bg-purple">
-            <Image
-              src={josefinaRodriguez}
-              alt="Portrait of Josefina Rodriguez"
-              sizes="(min-width: 1024px) 420px, 100vw"
-              className="h-auto w-full"
-            />
-          </div>
-          <figure className="flex flex-col justify-between gap-6 rounded-[24px] bg-ink p-6 md:p-10">
-            <p className="text-xs font-extrabold tracking-wide text-gold">QUOTE</p>
-            <blockquote className="text-[clamp(18px,2vw,26px)] leading-[1.35] font-extrabold text-cream">
-              “{quote.text}”
-            </blockquote>
-            <figcaption className="flex flex-col gap-1">
-              <p className="text-xl font-black text-yellow">{quote.memberName}</p>
-              <p className="text-base font-bold text-white">{quote.role}</p>
-              <p className="text-base font-bold text-white/80">{quote.team}</p>
-            </figcaption>
-          </figure>
+      <section aria-label="Upcoming events" className="mx-auto mt-8 grid max-w-[1440px] gap-5 px-5 md:mt-12 md:gap-8 md:px-[72px] lg:grid-cols-2">
+        <EventPanel
+          surface="bg-purple"
+          title="VIRTUAL CAMPAIGN KICKOFF"
+          date="November 18 @7:00 PM"
+          message="Join our union elected leadership and demonstrate our solidarity!"
+          action="VIRTUAL CAMPAIGN KICKOFF RSVP"
+        />
+        <EventPanel
+          surface="bg-purple-deep"
+          title="OPEN BARGAINING"
+          date="November 19 @7:00 PM"
+          message="Register for open bargaining now! Save your spot to support your bargaining team!"
+          action="RSVP FOR OPEN BARGAINING"
+        />
+      </section>
+
+      <section aria-label="Why it matters" className="mt-10 bg-yellow md:mt-14">
+        <div className="mx-auto max-w-[1440px] px-5 py-12 md:px-[72px] md:py-16">
+          <h2 className="text-sm font-black tracking-[0.08em] text-purple-deep md:text-base">WHY IT MATTERS</h2>
+          <blockquote className="mt-4 max-w-[65ch] text-2xl leading-snug font-extrabold text-ink md:text-[32px]">
+            “{preparationQuote}”
+          </blockquote>
         </div>
       </section>
 
-      <aside className="flex flex-col gap-6 rounded-[24px] bg-ink p-7 lg:flex-row lg:items-center lg:justify-between">
-        <div className="flex max-w-[760px] flex-col gap-2.5">
-          <p className="text-2xl font-extrabold text-cream md:text-[32px]">
-            PPMM leadership can strengthen the mission at the table.
+      <section aria-label="Membership message" className="mx-auto grid max-w-[1440px] items-center gap-8 px-5 py-12 md:px-[72px] md:py-16 lg:grid-cols-[minmax(300px,440px)_1fr] lg:gap-16">
+        <figure className="flex w-full max-w-[340px] flex-col gap-4 lg:max-w-none">
+          <div className="relative">
+            <div className="absolute -bottom-3 -left-3 h-full w-full rounded-[24px] bg-yellow" />
+            <div className="relative overflow-hidden rounded-[24px]">
+              <Image
+                src={teamPortrait05}
+                alt="PPMMWU bargaining team member portrait"
+                sizes="(min-width: 1024px) 440px, 340px"
+                className="h-auto w-full"
+              />
+            </div>
+          </div>
+          <figcaption className="flex flex-col gap-1.5 pl-1">
+            <img
+              src={member.nameImage}
+              alt="Bargaining team member name graphic"
+              className="h-11 w-auto max-w-full object-contain object-left md:h-12"
+            />
+            <p className="text-lg font-bold text-ink md:text-xl">{member.role}</p>
+            <p className="text-base font-bold text-muted md:text-lg">{member.team}</p>
+          </figcaption>
+        </figure>
+        <div className="flex flex-col gap-3">
+          <p className="max-w-[16ch] text-balance text-[clamp(36px,4.8vw,60px)] leading-[1.05] font-black text-purple">
+            Join the Virtual Campaign Kickoff!
           </p>
-          <p className="text-lg leading-[1.4] font-bold text-white">
-            Open bargaining is a place to listen, bargain, and invest in the workforce. RSVP for the kickoff and
-            stand with the team carrying that message.
+          <p className="max-w-[16ch] text-balance text-[clamp(36px,4.8vw,60px)] leading-[1.05] font-black text-ink">
+            Let’s come together to fulfill our mission!
           </p>
-          <Link href="/about#bargaining-team" className="text-base font-extrabold text-gold hover:underline">
-            Meet the full bargaining team →
-          </Link>
         </div>
-        <PillLink
-          href={externalLinks.openBargainingRsvp}
-          withArrow
-          textSize="text-sm md:text-xl"
-          className="shrink-0 self-start px-5 whitespace-nowrap lg:self-auto"
-        >
-          RSVP FOR OPEN BARGAINING
-        </PillLink>
-      </aside>
-    </div>
+      </section>
+    </>
   );
 }

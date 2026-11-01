@@ -50,7 +50,7 @@ const resourceCards = [
 export default function HomePage() {
   return (
     <>
-      <div className="h-1 w-full rounded-full bg-pink" />
+      <div className="h-1 w-full rounded-full bg-purple" />
       <div className="pt-4 md:pt-6">
         <HomeHero />
       </div>

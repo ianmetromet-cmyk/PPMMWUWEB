@@ -12,7 +12,7 @@ export default function BargainingPrinciplesPage() {
   return (
     <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-8 px-5 py-12 md:gap-10 md:px-[72px] md:py-16">
       <header className="flex max-w-[980px] flex-col gap-5">
-        <p className="text-sm font-black tracking-[0.14em] text-pink uppercase md:text-base">
+        <p className="text-sm font-black tracking-[0.14em] text-purple uppercase md:text-base">
           The mission runs on us!
         </p>
         <h1 className="text-[clamp(38px,5vw,64px)] leading-[1.05] font-black text-purple">

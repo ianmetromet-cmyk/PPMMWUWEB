@@ -86,7 +86,7 @@ export default function ContactPage() {
         className="mt-10 flex flex-col gap-10 rounded-[24px] bg-ink p-6 md:p-10 lg:flex-row lg:gap-12"
       >
         <div className="flex flex-col gap-[18px] lg:w-[400px] lg:shrink-0">
-          <p className="text-lg font-black text-pink">SEND A MESSAGE</p>
+          <p className="text-lg font-black text-yellow">SEND A MESSAGE</p>
           <h2 className="text-[clamp(34px,4vw,46px)] leading-none font-black text-gold">
             YOUR MESSAGE GOES TO OUR UNION.
           </h2>

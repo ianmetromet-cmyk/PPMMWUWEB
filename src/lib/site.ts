@@ -11,7 +11,7 @@ export const contactFormEndpoint = "https://formspree.io/f/mjygqewo";
 export const navItems = [
   { label: "HOME", href: "/" },
   { label: "NEWS", href: "/news" },
-  { label: "2026 NEGOTIATIONS", href: "/negotiations" },
+  { label: "2027 NEGOTIATIONS", href: "/negotiations" },
   { label: "BARGAINING PRINCIPLES", href: "/bargaining-principles" },
   { label: "CONTACT US", href: "/contact" },
   { label: "ABOUT", href: "/about" },
