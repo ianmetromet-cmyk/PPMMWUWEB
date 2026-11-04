@@ -20,12 +20,14 @@ function EventPanel({
   date,
   message,
   action,
+  href,
   surface,
 }: {
   title: string;
   date: string;
   message: string;
   action: string;
+  href: string;
   surface: "bg-purple" | "bg-purple-deep";
 }) {
   return (
@@ -36,7 +38,7 @@ function EventPanel({
         <p className="max-w-[36ch] text-xl leading-snug font-extrabold text-cream md:text-2xl">{message}</p>
       </div>
       <PillLink
-        href={externalLinks.openBargainingRsvp}
+        href={href}
         withArrow
         textSize="text-base md:text-lg"
         textColor="text-purple-deep"
@@ -67,6 +69,7 @@ export default function NegotiationsPage() {
           date="November 18 @7:00 PM"
           message="Join our union elected leadership and demonstrate our solidarity!"
           action="VIRTUAL CAMPAIGN KICKOFF RSVP"
+          href={externalLinks.virtualKickoffRsvp}
         />
         <EventPanel
           surface="bg-purple-deep"
@@ -74,6 +77,7 @@ export default function NegotiationsPage() {
           date="November 19 @7:00 PM"
           message="Register for open bargaining now! Save your spot to support your bargaining team!"
           action="RSVP FOR OPEN BARGAINING"
+          href={externalLinks.openBargainingRsvp}
         />
       </section>
 

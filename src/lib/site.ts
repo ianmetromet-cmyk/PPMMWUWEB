@@ -3,6 +3,7 @@ export const externalLinks = {
   memberActionTeam: "https://tr.ee/hijdXx6ALv",
   bargainingPrinciples: "/bargaining-principles",
   openBargainingRsvp: "https://seiu521-org.zoom.us/meeting/register/Cs5aNwHMS3SlG2XIFC7s9g",
+  virtualKickoffRsvp: "https://seiu521-org.zoom.us/meeting/register/mMj7dnspSGSZEyfUYe0O5g#/registration",
 };
 
 // GitHub Pages can't process form submissions on its own, so the form posts to Formspree.
