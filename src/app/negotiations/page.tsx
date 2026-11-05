@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import doloresHuerta from "@/assets/negotiations/dolores-huerta.png";
 import teamPortrait05 from "@/assets/team/t05.png";
 import { PillLink } from "@/components/PillLink";
 import { externalLinks } from "@/lib/site";
@@ -81,10 +82,9 @@ export default function NegotiationsPage() {
         />
       </section>
 
-      <section aria-label="Why it matters" className="mt-10 bg-yellow md:mt-14">
+      <section className="mt-10 bg-yellow md:mt-14">
         <div className="mx-auto max-w-[1440px] px-5 py-12 md:px-[72px] md:py-16">
-          <h2 className="text-sm font-black tracking-[0.08em] text-purple-deep md:text-base">WHY IT MATTERS</h2>
-          <blockquote className="mt-4 max-w-[65ch] text-2xl leading-snug font-extrabold text-ink md:text-[32px]">
+          <blockquote className="max-w-[65ch] text-2xl leading-snug font-extrabold text-ink md:text-[32px]">
             “{preparationQuote}”
           </blockquote>
         </div>
@@ -120,6 +120,45 @@ export default function NegotiationsPage() {
           <p className="max-w-[16ch] text-balance text-[clamp(36px,4.8vw,60px)] leading-[1.05] font-black text-ink">
             Let’s come together to fulfill our mission!
           </p>
+        </div>
+      </section>
+
+      <section
+        aria-label="In memory of Dolores Huerta"
+        className="bg-[linear-gradient(180deg,#f7f2ea_0%,#f8ecd0_40%,#f6e6ee_72%,#e7e0f4_100%)]"
+      >
+        <div className="mx-auto flex max-w-[1440px] flex-col items-center px-5 py-14 md:px-[72px] md:py-20">
+          <figure className="flex w-full max-w-[640px] flex-col items-center gap-8">
+            <div className="relative w-full">
+              <div className="absolute -bottom-3 -left-3 h-full w-full rounded-[24px] bg-[#f0c846]" aria-hidden="true" />
+              <div className="relative overflow-hidden rounded-[24px] bg-[#f7f2ea]">
+                <Image
+                  src={doloresHuerta}
+                  alt="Dolores Huerta. Celebrate People’s History. ¡Sí se puede! A heart, a stethoscope, and a medical cross sit below the portrait."
+                  sizes="(min-width: 768px) 640px, 100vw"
+                  className="h-auto w-full"
+                />
+              </div>
+            </div>
+            <figcaption className="flex flex-col items-center gap-3 text-center">
+              <p className="text-[clamp(44px,7vw,80px)] leading-none font-black tracking-tight text-[#3c3278]">
+                1930 - 2026
+              </p>
+              <p className="text-[clamp(32px,4.6vw,56px)] leading-none font-black text-[#3c3278]">
+                Rest in Power
+              </p>
+            </figcaption>
+          </figure>
+          <div className="mt-10 flex w-full max-w-[68ch] flex-col gap-5 text-left text-[15pt] leading-relaxed font-medium text-ink md:mt-12">
+            <p>We pause to honor the extraordinary life of Dolores Huerta, who passed away on October 28 at the age of 96.</p>
+            <p>
+              A pioneering labor organizer and co-founder of the United Farm Workers, Dolores’s legacy survives through her impact which continues to change the world by inspiring generations of workers to organize together.
+            </p>
+            <p>
+              Her enduring call, “¡Sí, se puede!”, rests in our empowered consent and collective unity to make change real. As we begin this exciting chapter, we exude her spirit of solidarity, carry forward our focused determination and worker power that helped us form our union.
+            </p>
+            <p className="font-black">Rest in power, Dolores.</p>
+          </div>
         </div>
       </section>
     </>
