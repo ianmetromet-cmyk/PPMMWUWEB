@@ -23,7 +23,7 @@ export default function BargainingPrinciplesPage() {
           workers. Read them below and add your name to stand united for better
           staffing, wages, benefits, training, and working conditions.
         </p>
-        <div className="flex flex-wrap gap-3">
+        <div>
           <a
             href={everyActionUrl}
             target="_blank"
@@ -32,14 +32,6 @@ export default function BargainingPrinciplesPage() {
           >
             OPEN THE SIGN-ON FORM ↗
           </a>
-          <button
-            type="button"
-            data-ppmmwu-principles-trigger
-            aria-haspopup="dialog"
-            className="inline-flex items-center rounded-full border-3 border-ink bg-white px-6 py-3.5 text-base font-extrabold text-purple transition-transform hover:-translate-y-0.5 md:text-xl"
-          >
-            STRENGTHEN THE MISSION
-          </button>
         </div>
       </header>
 
