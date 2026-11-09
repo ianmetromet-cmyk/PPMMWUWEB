@@ -4,6 +4,8 @@ export const externalLinks = {
   bargainingPrinciples: "/bargaining-principles",
   openBargainingRsvp: "https://seiu521-org.zoom.us/meeting/register/Cs5aNwHMS3SlG2XIFC7s9g",
   virtualKickoffRsvp: "https://seiu521-org.zoom.us/meeting/register/mMj7dnspSGSZEyfUYe0O5g#/registration",
+  zoomBackground:
+    "https://drive.google.com/file/d/1bjyCTHLT1kR0s6AIJUYGIDVucohxfBUZ/view?usp=sharing",
 };
 
 // GitHub Pages can't process form submissions on its own, so the form posts to Formspree.

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import doloresHuerta from "@/assets/negotiations/dolores-huerta.png";
+import zoomBackground from "@/assets/negotiations/zoom-background.jpg";
 import teamPortrait05 from "@/assets/team/t05.png";
 import { KickoffSignupButton } from "@/components/KickoffSignupButton";
 import { PillLink } from "@/components/PillLink";
@@ -81,6 +82,34 @@ export default function NegotiationsPage() {
           action="RSVP FOR OPEN BARGAINING"
           href={externalLinks.openBargainingRsvp}
         />
+      </section>
+
+      <section aria-label="Zoom background" className="mx-auto mt-5 max-w-[1440px] px-5 md:mt-8 md:px-[72px]">
+        <div className="grid items-center gap-6 rounded-[28px] bg-ink p-6 text-cream md:gap-8 md:p-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(340px,0.85fr)] lg:gap-12">
+          <Image
+            src={zoomBackground}
+            alt="PPMMWU 2027 Negotiations Zoom background. I stand with my PPMMWU Bargaining Team!"
+            sizes="(min-width: 1024px) 860px, 100vw"
+            className="h-auto w-full rounded-[18px]"
+          />
+          <div className="flex flex-col items-start gap-5">
+            <h2 className="text-xl leading-tight font-black tracking-[0.03em] text-yellow md:text-2xl">
+              ZOOM BACKGROUND
+            </h2>
+            <p className="text-xl leading-snug font-extrabold md:text-2xl">
+              Download this background for the Virtual Campaign Kickoff and open bargaining.
+            </p>
+            <PillLink
+              href={externalLinks.zoomBackground}
+              withArrow
+              textSize="text-base md:text-lg"
+              textColor="text-purple-deep"
+              className="w-full justify-center px-6 text-center text-balance lg:w-auto"
+            >
+              DOWNLOAD ZOOM BACKGROUND
+            </PillLink>
+          </div>
+        </div>
       </section>
 
       <section className="mt-10 bg-yellow md:mt-14">
