@@ -1,9 +1,14 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Script from "next/script";
+import teamPortrait05 from "@/assets/team/t05.png";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
 import "./globals.css";
+
+const assetBase = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+const kickoffPortraitSrc = `${assetBase}${teamPortrait05.src}`;
+const kickoffNameSrc = `${assetBase}/nameplates/n02-purple.png`;
 
 // PPMMWU one-file update (October 2026)
 // 1. Constrain the homepage banner to 1500px without cropping.
@@ -176,16 +181,21 @@ const contactFormScript = `
 
 const bargainingPopupScript = `
 (function () {
-  var destination = "https://secure.ngpvan.com/jiBxJnPajUKRIzjfSsE9RQ2";
-  var seenKey = "ppmmwu-principles-popup-seen-v2";
+  var principlesDestination = "https://secure.ngpvan.com/jiBxJnPajUKRIzjfSsE9RQ2";
+  var kickoffDestination = "https://www.ppmmwu.org/negotiations/";
+
+  function isHomePage() {
+    var path = window.location.pathname.replace(/\\/+$/, "");
+    return path === "" || /\\/PPMMWUWEB$/i.test(path);
+  }
 
   // One-file update: connect the FIRST button in the Union Updates panel.
   // Also refresh after client-side navigation to the homepage.
   function linkFirstUpdateButton() {
     var firstUpdate = document.querySelector('section[aria-labelledby="union-updates"] article');
     var link = firstUpdate && firstUpdate.querySelector('a[href]');
-    if (link && link.getAttribute('href') !== destination) {
-      link.setAttribute('href', destination);
+    if (link && link.getAttribute('href') !== kickoffDestination) {
+      link.setAttribute('href', kickoffDestination);
       link.setAttribute('target', '_blank');
       link.setAttribute('rel', 'noopener noreferrer');
     }
@@ -197,6 +207,8 @@ const bargainingPopupScript = `
       childList: true, subtree: true
     });
 
+    var home = isHomePage();
+    var seenKey = home ? "ppmmwu-kickoff-popup-seen-v1" : "ppmmwu-principles-popup-seen-v2";
     var alreadyShown = false;
     try { alreadyShown = sessionStorage.getItem(seenKey) === '1'; } catch (e) {}
     if (alreadyShown || document.querySelector('[data-ppmmwu-principles-popup]')) return;
@@ -206,19 +218,41 @@ const bargainingPopupScript = `
     var overlay = document.createElement('div');
     overlay.className = 'ppmmwu-principles-overlay';
     overlay.setAttribute('data-ppmmwu-principles-popup', '');
-    overlay.innerHTML =
-      '<div class="ppmmwu-principles-dialog" role="dialog" aria-modal="true" ' +
-      'aria-labelledby="ppmmwu-principles-title" aria-describedby="ppmmwu-principles-description" tabindex="-1">' +
-      '<button class="ppmmwu-principles-close" type="button" data-ppmmwu-close aria-label="Close welcome window">&times;</button>' +
-      '<img class="ppmmwu-principles-image" src="${ppmmwuPopupGraphic}" alt="PPMM Workers United: The Mission Runs on Us — Bargaining Principles, Registered Nurses, Clinicians, and HSS, featuring PPMMWU workers" />' +
-      '<div class="ppmmwu-principles-inner">' +
-      '<div class="ppmmwu-principles-kicker">PPMM WORKERS UNITED</div>' +
-      '<h2 id="ppmmwu-principles-title">STRENGTHEN THE MISSION.</h2>' +
-      '<p id="ppmmwu-principles-description">Add your name to the bargaining principles guiding our fight for a strong first contract.</p>' +
-      '<a class="ppmmwu-principles-action" href="' + destination + '" target="_blank" rel="noopener noreferrer">SIGN ON TO BARGAINING PRINCIPLES <span aria-hidden="true">↗</span></a>' +
-      '<button class="ppmmwu-principles-later" type="button" data-ppmmwu-close>Not now — continue to website</button>' +
-      '</div>' +
-      '</div>';
+    overlay.innerHTML = home
+      ? '<div class="ppmmwu-principles-dialog ppmmwu-kickoff-dialog" role="dialog" aria-modal="true" ' +
+        'aria-labelledby="ppmmwu-principles-title" aria-describedby="ppmmwu-principles-description" tabindex="-1">' +
+        '<button class="ppmmwu-principles-close" type="button" data-ppmmwu-close aria-label="Close welcome window">&times;</button>' +
+        '<div class="ppmmwu-kickoff-layout">' +
+        '<figure class="ppmmwu-kickoff-figure">' +
+        '<div class="ppmmwu-kickoff-photo-wrap">' +
+        '<img src="${kickoffPortraitSrc}" alt="PPMMWU bargaining team member portrait" />' +
+        '</div>' +
+        '<figcaption>' +
+        '<img class="ppmmwu-kickoff-name" src="${kickoffNameSrc}" alt="Bargaining team member name graphic" />' +
+        '<p class="ppmmwu-kickoff-role">HSS II, Fulton</p>' +
+        '<p class="ppmmwu-kickoff-team">PPMMWU Bargaining Team Member</p>' +
+        '</figcaption>' +
+        '</figure>' +
+        '<div class="ppmmwu-kickoff-copy">' +
+        '<h2 id="ppmmwu-principles-title">Join the Virtual Campaign Kickoff!</h2>' +
+        '<p id="ppmmwu-principles-description" class="ppmmwu-kickoff-line">Let’s come together to fulfill our mission!</p>' +
+        '<a class="ppmmwu-principles-action ppmmwu-kickoff-signup" href="' + kickoffDestination + '" data-ppmmwu-signup>Sign up</a>' +
+        '<button class="ppmmwu-principles-later" type="button" data-ppmmwu-close>Not now — continue to website</button>' +
+        '</div>' +
+        '</div>' +
+        '</div>'
+      : '<div class="ppmmwu-principles-dialog" role="dialog" aria-modal="true" ' +
+        'aria-labelledby="ppmmwu-principles-title" aria-describedby="ppmmwu-principles-description" tabindex="-1">' +
+        '<button class="ppmmwu-principles-close" type="button" data-ppmmwu-close aria-label="Close welcome window">&times;</button>' +
+        '<img class="ppmmwu-principles-image" src="${ppmmwuPopupGraphic}" alt="PPMM Workers United: The Mission Runs on Us — Bargaining Principles, Registered Nurses, Clinicians, and HSS, featuring PPMMWU workers" />' +
+        '<div class="ppmmwu-principles-inner">' +
+        '<div class="ppmmwu-principles-kicker">PPMM WORKERS UNITED</div>' +
+        '<h2 id="ppmmwu-principles-title">STRENGTHEN THE MISSION.</h2>' +
+        '<p id="ppmmwu-principles-description">Add your name to the bargaining principles guiding our fight for a strong first contract.</p>' +
+        '<a class="ppmmwu-principles-action" href="' + principlesDestination + '" target="_blank" rel="noopener noreferrer">SIGN ON TO BARGAINING PRINCIPLES <span aria-hidden="true">↗</span></a>' +
+        '<button class="ppmmwu-principles-later" type="button" data-ppmmwu-close>Not now — continue to website</button>' +
+        '</div>' +
+        '</div>';
 
     function closeModal() {
       if (!overlay.isConnected) return;
@@ -252,6 +286,15 @@ const bargainingPopupScript = `
     }
 
     overlay.addEventListener('click', function (event) {
+      var signup = event.target.closest('[data-ppmmwu-signup]');
+      if (signup) {
+        event.preventDefault();
+        var popup = window.open(kickoffDestination, 'ppmmwu-negotiations', 'popup=yes,width=1100,height=820');
+        if (popup) popup.opener = null;
+        else window.location.assign(kickoffDestination);
+        closeModal();
+        return;
+      }
       if (event.target === overlay || event.target.closest('[data-ppmmwu-close]')) {
         closeModal();
       }
@@ -473,6 +516,56 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             outline: 3px solid #930bf4;
             outline-offset: 4px;
           }
+          .ppmmwu-kickoff-dialog { width: min(100%, 1040px); }
+          .ppmmwu-kickoff-layout {
+            display: grid;
+            align-items: center;
+            gap: 28px;
+            padding: clamp(28px, 4vw, 40px) clamp(18px, 4vw, 42px) 28px;
+            text-align: left;
+          }
+          @media (max-width: 799px) {
+            .ppmmwu-kickoff-layout { gap: 16px; padding-top: 22px; }
+            .ppmmwu-kickoff-photo-wrap { max-width: 210px; }
+          }
+          @media (min-width: 800px) {
+            .ppmmwu-kickoff-layout { grid-template-columns: minmax(220px, 340px) 1fr; gap: 36px; }
+          }
+          .ppmmwu-kickoff-photo-wrap { position: relative; }
+          .ppmmwu-kickoff-photo-wrap::before {
+            content: "";
+            position: absolute;
+            right: 0;
+            bottom: -12px;
+            left: -12px;
+            height: 100%;
+            border-radius: 24px;
+            background: #ffd119;
+          }
+          .ppmmwu-kickoff-photo-wrap img {
+            position: relative;
+            display: block;
+            width: 100%;
+            height: auto;
+            border-radius: 24px;
+          }
+          .ppmmwu-kickoff-figure { margin: 0; }
+          .ppmmwu-kickoff-name { display: block; height: 44px; width: auto; max-width: 100%; object-fit: contain; object-position: left; margin-top: 16px; }
+          .ppmmwu-kickoff-dialog .ppmmwu-kickoff-role { margin: 8px 0 0; max-width: none; font-size: 18px; font-weight: 700; color: #160611; text-align: left; }
+          .ppmmwu-kickoff-dialog .ppmmwu-kickoff-team { margin: 4px 0 0; max-width: none; font-size: 16px; font-weight: 700; color: #6c5a65; text-align: left; }
+          .ppmmwu-kickoff-copy { display: flex; flex-direction: column; align-items: flex-start; }
+          .ppmmwu-kickoff-dialog h2 { max-width: 12ch; margin: 0 0 12px; text-align: left; }
+          .ppmmwu-kickoff-dialog .ppmmwu-principles-later { margin-top: 14px; }
+          .ppmmwu-principles-dialog p.ppmmwu-kickoff-line {
+            max-width: 12ch;
+            margin: 0 0 22px;
+            font-size: clamp(28px, 4vw, 46px);
+            line-height: 1.05;
+            font-weight: 900;
+            color: #160611;
+            text-align: left;
+          }
+          .ppmmwu-kickoff-signup { width: auto; min-width: 180px; padding-inline: 28px; }
         `}</style>
       </head>
       <body className="flex min-h-full flex-col bg-cream font-sans text-ink">

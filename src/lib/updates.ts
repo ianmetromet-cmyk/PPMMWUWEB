@@ -1,5 +1,3 @@
-import { externalLinks } from "@/lib/site";
-
 export type UnionUpdate = {
   tag: string;
   title: string;
@@ -19,6 +17,6 @@ export const unionUpdates: UnionUpdate[] = [
       "Our new website is your one-stop destination for bargaining updates, member stories, campaign priorities, and opportunities to get involved. Winning a strong first contract takes all of us standing together.",
       "Visit our website, sign on to our bargaining principles, and help demonstrate our collective support for the priorities guiding our bargaining team as we enter negotiations.",
     ],
-    cta: { label: "SIGN ON TO BARGAINING PRINCIPLES", href: externalLinks.bargainingPrinciples },
+    cta: { label: "LEARN MORE & GET INVOLVED", href: "https://www.ppmmwu.org/negotiations/" },
   },
 ];

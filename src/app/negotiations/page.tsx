@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import doloresHuerta from "@/assets/negotiations/dolores-huerta.png";
 import teamPortrait05 from "@/assets/team/t05.png";
+import { KickoffSignupButton } from "@/components/KickoffSignupButton";
 import { PillLink } from "@/components/PillLink";
 import { externalLinks } from "@/lib/site";
 
@@ -120,6 +121,7 @@ export default function NegotiationsPage() {
           <p className="max-w-[16ch] text-balance text-[clamp(36px,4.8vw,60px)] leading-[1.05] font-black text-ink">
             Let’s come together to fulfill our mission!
           </p>
+          <KickoffSignupButton />
         </div>
       </section>
 
