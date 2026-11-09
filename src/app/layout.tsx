@@ -184,9 +184,17 @@ const bargainingPopupScript = `
   var principlesDestination = "https://secure.ngpvan.com/jiBxJnPajUKRIzjfSsE9RQ2";
   var kickoffDestination = "https://www.ppmmwu.org/negotiations/";
 
+  function pagePath() {
+    return window.location.pathname.replace(/\\/+$/, "");
+  }
+
   function isHomePage() {
-    var path = window.location.pathname.replace(/\\/+$/, "");
+    var path = pagePath();
     return path === "" || /\\/PPMMWUWEB$/i.test(path);
+  }
+
+  function isNegotiationsPage() {
+    return /\\/negotiations$/i.test(pagePath());
   }
 
   // One-file update: connect the FIRST button in the Union Updates panel.
@@ -206,6 +214,8 @@ const bargainingPopupScript = `
     new MutationObserver(linkFirstUpdateButton).observe(document.body, {
       childList: true, subtree: true
     });
+
+    if (isNegotiationsPage()) return;
 
     var home = isHomePage();
     var seenKey = home ? "ppmmwu-kickoff-popup-seen-v1" : "ppmmwu-principles-popup-seen-v2";
