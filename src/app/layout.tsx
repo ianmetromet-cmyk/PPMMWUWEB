@@ -14,8 +14,8 @@ const kickoffNameSrc = `${assetBase}/nameplates/n02-purple.png`;
 // 1. Constrain the homepage banner to 1500px without cropping.
 // 2. Hide the obsolete homepage bargaining-updates signup.
 // 3. Route the existing Contact Us form to Ian.newman@seiu521.org using FormSubmit.
-// 4. Show a dismissible first-visit bargaining-principles popup.
-// 5. Connect the first Union Updates button to the approved NGP VAN form.
+// 4. Show the Virtual Campaign Kickoff popup on the first home page visit; the bargaining-principles popup opens only from its button on the Bargaining Principles page.
+// 5. Connect the first Union Updates button to the 2027 Negotiations page.
 // 6. Preserve an intentionally concealed team portrait.
 // 7. Attribute September 2026 PPMM worker survey findings.
 // 8. Show the WhatsApp banner on Home and Timeline only.
@@ -183,6 +183,7 @@ const bargainingPopupScript = `
 (function () {
   var principlesDestination = "https://secure.ngpvan.com/jiBxJnPajUKRIzjfSsE9RQ2";
   var kickoffDestination = "https://www.ppmmwu.org/negotiations/";
+  var kickoffSeenKey = "ppmmwu-kickoff-popup-seen-v1";
 
   function pagePath() {
     return window.location.pathname.replace(/\\/+$/, "");
@@ -193,8 +194,8 @@ const bargainingPopupScript = `
     return path === "" || /\\/PPMMWUWEB$/i.test(path);
   }
 
-  function isNegotiationsPage() {
-    return /\\/negotiations$/i.test(pagePath());
+  function isPrinciplesPage() {
+    return /\\/bargaining-principles$/i.test(pagePath());
   }
 
   // One-file update: connect the FIRST button in the Union Updates panel.
@@ -209,26 +210,16 @@ const bargainingPopupScript = `
     }
   }
 
-  function init() {
-    linkFirstUpdateButton();
-    new MutationObserver(linkFirstUpdateButton).observe(document.body, {
-      childList: true, subtree: true
-    });
+  function openDialog(kind, returnFocusTo) {
+    if (document.querySelector('[data-ppmmwu-principles-popup]')) return;
 
-    if (isNegotiationsPage()) return;
-
-    var home = isHomePage();
-    var seenKey = home ? "ppmmwu-kickoff-popup-seen-v1" : "ppmmwu-principles-popup-seen-v2";
-    var alreadyShown = false;
-    try { alreadyShown = sessionStorage.getItem(seenKey) === '1'; } catch (e) {}
-    if (alreadyShown || document.querySelector('[data-ppmmwu-principles-popup]')) return;
-
-    var previousFocus = document.activeElement;
+    var kickoff = kind === 'kickoff';
+    var previousFocus = returnFocusTo || document.activeElement;
     var previousOverflow = document.body.style.overflow;
     var overlay = document.createElement('div');
     overlay.className = 'ppmmwu-principles-overlay';
     overlay.setAttribute('data-ppmmwu-principles-popup', '');
-    overlay.innerHTML = home
+    overlay.innerHTML = kickoff
       ? '<div class="ppmmwu-principles-dialog ppmmwu-kickoff-dialog" role="dialog" aria-modal="true" ' +
         'aria-labelledby="ppmmwu-principles-title" aria-describedby="ppmmwu-principles-description" tabindex="-1">' +
         '<button class="ppmmwu-principles-close" type="button" data-ppmmwu-close aria-label="Close welcome window">&times;</button>' +
@@ -269,7 +260,10 @@ const bargainingPopupScript = `
       overlay.remove();
       document.body.style.overflow = previousOverflow;
       document.removeEventListener('keydown', handleKeys, true);
-      try { sessionStorage.setItem(seenKey, '1'); } catch (e) {}
+      window.removeEventListener('popstate', closeModal);
+      if (kickoff) {
+        try { sessionStorage.setItem(kickoffSeenKey, '1'); } catch (e) {}
+      }
       if (previousFocus && typeof previousFocus.focus === 'function' && previousFocus.isConnected) {
         previousFocus.focus();
       }
@@ -316,8 +310,29 @@ const bargainingPopupScript = `
     document.body.appendChild(overlay);
     document.body.style.overflow = 'hidden';
     document.addEventListener('keydown', handleKeys, true);
+    if (!kickoff) window.addEventListener('popstate', closeModal);
     var closeButton = overlay.querySelector('.ppmmwu-principles-close');
     if (closeButton) closeButton.focus();
+  }
+
+  function openPrinciplesOnRequest(event) {
+    var trigger = event.target instanceof Element && event.target.closest('[data-ppmmwu-principles-trigger]');
+    if (!trigger || !isPrinciplesPage()) return;
+    event.preventDefault();
+    openDialog('principles', trigger);
+  }
+
+  function init() {
+    linkFirstUpdateButton();
+    new MutationObserver(linkFirstUpdateButton).observe(document.body, {
+      childList: true, subtree: true
+    });
+    document.addEventListener('click', openPrinciplesOnRequest);
+
+    if (!isHomePage()) return;
+    var alreadyShown = false;
+    try { alreadyShown = sessionStorage.getItem(kickoffSeenKey) === '1'; } catch (e) {}
+    if (!alreadyShown) openDialog('kickoff');
   }
 
   if (document.readyState === 'loading') {
@@ -411,7 +426,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             .ppmmwu-timeline-scroller > img { min-width: 860px; max-width: none; }
           }
 
-          /* Dismissible first-visit bargaining-principles welcome dialog. */
+          /* Popup dialogs: the home kickoff welcome and the on-request bargaining principles window. */
           .ppmmwu-principles-overlay {
             position: fixed;
             inset: 0;
