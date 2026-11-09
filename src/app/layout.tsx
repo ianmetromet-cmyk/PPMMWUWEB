@@ -15,7 +15,7 @@ const kickoffNameSrc = `${assetBase}/nameplates/n02-purple.png`;
 // 2. Hide the obsolete homepage bargaining-updates signup.
 // 3. Route the existing Contact Us form to Ian.newman@seiu521.org using FormSubmit.
 // 4. Show the Virtual Campaign Kickoff popup on the first home page visit. The older bargaining-principles popup is retired.
-// 5. Connect the first Union Updates button to the 2027 Negotiations page.
+// 5. Union update buttons keep the links set with each update.
 // 6. Preserve an intentionally concealed team portrait.
 // 7. Attribute September 2026 PPMM worker survey findings.
 // 8. Show the WhatsApp banner on Home and Timeline only.
@@ -192,18 +192,6 @@ const bargainingPopupScript = `
     return path === "" || /\\/PPMMWUWEB$/i.test(path);
   }
 
-  // One-file update: connect the FIRST button in the Union Updates panel.
-  // Also refresh after client-side navigation to the homepage.
-  function linkFirstUpdateButton() {
-    var firstUpdate = document.querySelector('section[aria-labelledby="union-updates"] article');
-    var link = firstUpdate && firstUpdate.querySelector('a[href]');
-    if (link && link.getAttribute('href') !== kickoffDestination) {
-      link.setAttribute('href', kickoffDestination);
-      link.setAttribute('target', '_blank');
-      link.setAttribute('rel', 'noopener noreferrer');
-    }
-  }
-
   function openKickoffDialog() {
     if (document.querySelector('[data-ppmmwu-principles-popup]')) return;
 
@@ -293,11 +281,6 @@ const bargainingPopupScript = `
   }
 
   function init() {
-    linkFirstUpdateButton();
-    new MutationObserver(linkFirstUpdateButton).observe(document.body, {
-      childList: true, subtree: true
-    });
-
     if (!isHomePage()) return;
     var alreadyShown = false;
     try { alreadyShown = sessionStorage.getItem(kickoffSeenKey) === '1'; } catch (e) {}

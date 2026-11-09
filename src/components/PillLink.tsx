@@ -20,11 +20,11 @@ export function PillLink({
   textColor = "text-purple",
 }: PillLinkProps) {
   const isExternal = /^https?:/.test(href) || href === "#";
-  const classes = `inline-flex items-center gap-3 rounded-full border-3 border-ink bg-yellow py-3.5 font-extrabold transition-transform hover:-translate-y-0.5 ${textColor} ${textSize} ${className}`;
+  const classes = `inline-flex max-w-full items-center gap-3 rounded-full border-3 border-ink bg-yellow py-3.5 font-extrabold transition-transform hover:-translate-y-0.5 ${textColor} ${textSize} ${className}`;
   const content = (
     <>
-      {children}
-      {withArrow && <Image src={arrowRight} alt="" width={18} height={18} />}
+      <span className="min-w-0 text-balance">{children}</span>
+      {withArrow && <Image src={arrowRight} alt="" width={18} height={18} className="shrink-0" />}
     </>
   );
 
