@@ -6,9 +6,9 @@ const HERO_ASPECT = 2130 / 564;
 
 export function HomeHero() {
   return (
-    <div className="mx-auto w-full max-w-[1440px] px-5 md:px-10">
+    <div className="mx-auto w-full max-w-[1440px] px-4 md:px-10">
       <div
-        className="relative h-[clamp(140px,48vw,220px)] w-full overflow-hidden rounded-[12px] sm:h-[clamp(180px,36vw,320px)] md:h-auto md:max-h-[420px] md:rounded-[16px]"
+        className="relative w-full overflow-hidden rounded-[12px] md:max-h-[420px] md:rounded-[16px]"
         style={{ aspectRatio: HERO_ASPECT }}
       >
         <Image
@@ -16,8 +16,8 @@ export function HomeHero() {
           alt="The mission runs on us! PPMM Workers United — People. Care. Power."
           fill
           priority
-          sizes="(min-width: 1440px) 1320px, calc(100vw - 40px)"
-          className="object-cover object-center"
+          sizes="(min-width: 1440px) 1360px, 100vw"
+          className="object-contain object-center"
         />
       </div>
     </div>
