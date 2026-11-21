@@ -1,20 +1,15 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Script from "next/script";
-import teamPortrait05 from "@/assets/team/t05.png";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
 import "./globals.css";
-
-const assetBase = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
-const kickoffPortraitSrc = `${assetBase}${teamPortrait05.src}`;
-const kickoffNameSrc = `${assetBase}/nameplates/n02-purple.png`;
 
 // PPMMWU one-file update (October 2026)
 // 1. Constrain the homepage banner to 1500px without cropping.
 // 2. Hide the obsolete homepage bargaining-updates signup.
 // 3. Route the existing Contact Us form to Ian.newman@seiu521.org using FormSubmit.
-// 4. Show the Virtual Campaign Kickoff popup on the first home page visit. The older bargaining-principles popup is retired.
+// 4. The Virtual Campaign Kickoff welcome window has been removed. The older bargaining-principles popup stays retired.
 // 5. Union update buttons keep the links set with each update.
 // 6. Preserve an intentionally concealed team portrait.
 // 7. Attribute September 2026 PPMM worker survey findings.
@@ -178,123 +173,6 @@ const contactFormScript = `
 })();
 `;
 
-const bargainingPopupScript = `
-(function () {
-  var kickoffDestination = "https://www.ppmmwu.org/negotiations/";
-  var kickoffSeenKey = "ppmmwu-kickoff-popup-seen-v1";
-
-  function pagePath() {
-    return window.location.pathname.replace(/\\/+$/, "");
-  }
-
-  function isHomePage() {
-    var path = pagePath();
-    return path === "" || /\\/PPMMWUWEB$/i.test(path);
-  }
-
-  function openKickoffDialog() {
-    if (document.querySelector('[data-ppmmwu-principles-popup]')) return;
-
-    var previousFocus = document.activeElement;
-    var previousOverflow = document.body.style.overflow;
-    var overlay = document.createElement('div');
-    overlay.className = 'ppmmwu-principles-overlay';
-    overlay.setAttribute('data-ppmmwu-principles-popup', '');
-    overlay.innerHTML =
-      '<div class="ppmmwu-principles-dialog ppmmwu-kickoff-dialog" role="dialog" aria-modal="true" ' +
-      'aria-labelledby="ppmmwu-principles-title" aria-describedby="ppmmwu-principles-description" tabindex="-1">' +
-      '<button class="ppmmwu-principles-close" type="button" data-ppmmwu-close aria-label="Close welcome window">&times;</button>' +
-      '<div class="ppmmwu-kickoff-layout">' +
-      '<figure class="ppmmwu-kickoff-figure">' +
-      '<div class="ppmmwu-kickoff-photo-wrap">' +
-      '<img src="${kickoffPortraitSrc}" alt="PPMMWU bargaining team member portrait" />' +
-      '</div>' +
-      '<figcaption>' +
-      '<img class="ppmmwu-kickoff-name" src="${kickoffNameSrc}" alt="Bargaining team member name graphic" />' +
-      '<p class="ppmmwu-kickoff-role">HSS II, Fulton</p>' +
-      '<p class="ppmmwu-kickoff-team">PPMMWU Bargaining Team Member</p>' +
-      '</figcaption>' +
-      '</figure>' +
-      '<div class="ppmmwu-kickoff-copy">' +
-      '<h2 id="ppmmwu-principles-title">Join the Virtual Campaign Kickoff!</h2>' +
-      '<p id="ppmmwu-principles-description" class="ppmmwu-kickoff-line">Let’s come together to fulfill our mission!</p>' +
-      '<a class="ppmmwu-principles-action ppmmwu-kickoff-signup" href="' + kickoffDestination + '" data-ppmmwu-signup>Sign up</a>' +
-      '<button class="ppmmwu-principles-later" type="button" data-ppmmwu-close>Not now — continue to website</button>' +
-      '</div>' +
-      '</div>' +
-      '</div>';
-
-    function closeModal() {
-      if (!overlay.isConnected) return;
-      overlay.remove();
-      document.body.style.overflow = previousOverflow;
-      document.removeEventListener('keydown', handleKeys, true);
-      try { sessionStorage.setItem(kickoffSeenKey, '1'); } catch (e) {}
-      if (previousFocus && typeof previousFocus.focus === 'function' && previousFocus.isConnected) {
-        previousFocus.focus();
-      }
-    }
-
-    function handleKeys(event) {
-      if (event.key === 'Escape') {
-        event.preventDefault();
-        closeModal();
-        return;
-      }
-      if (event.key !== 'Tab') return;
-      var controls = Array.from(overlay.querySelectorAll('button, a[href]'));
-      if (!controls.length) return;
-      var first = controls[0];
-      var last = controls[controls.length - 1];
-      if (event.shiftKey && document.activeElement === first) {
-        event.preventDefault();
-        last.focus();
-      } else if (!event.shiftKey && document.activeElement === last) {
-        event.preventDefault();
-        first.focus();
-      }
-    }
-
-    overlay.addEventListener('click', function (event) {
-      var signup = event.target.closest('[data-ppmmwu-signup]');
-      if (signup) {
-        event.preventDefault();
-        var popup = window.open(kickoffDestination, 'ppmmwu-negotiations', 'popup=yes,width=1100,height=820');
-        if (popup) popup.opener = null;
-        else window.location.assign(kickoffDestination);
-        closeModal();
-        return;
-      }
-      if (event.target === overlay || event.target.closest('[data-ppmmwu-close]')) {
-        closeModal();
-      }
-      if (event.target.closest('.ppmmwu-principles-action')) {
-        closeModal();
-      }
-    });
-
-    document.body.appendChild(overlay);
-    document.body.style.overflow = 'hidden';
-    document.addEventListener('keydown', handleKeys, true);
-    var closeButton = overlay.querySelector('.ppmmwu-principles-close');
-    if (closeButton) closeButton.focus();
-  }
-
-  function init() {
-    if (!isHomePage()) return;
-    var alreadyShown = false;
-    try { alreadyShown = sessionStorage.getItem(kickoffSeenKey) === '1'; } catch (e) {}
-    if (!alreadyShown) openKickoffDialog();
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init, {once: true});
-  } else {
-    init();
-  }
-})();
-`;
-
 const routeEnhancementScript = `
 (function () {
   function refresh() {
@@ -378,179 +256,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             .ppmmwu-timeline-scroller > img { min-width: 860px; max-width: none; }
           }
 
-          /* Popup dialogs: the home kickoff welcome and the on-request bargaining principles window. */
-          .ppmmwu-principles-overlay {
-            position: fixed;
-            inset: 0;
-            z-index: 99999;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 18px;
-            background: rgba(18, 8, 21, 0.78);
-            backdrop-filter: blur(5px);
-          }
-          .ppmmwu-principles-dialog {
-            position: relative;
-            width: min(100%, 980px);
-            max-height: calc(100dvh - 36px);
-            overflow-y: auto;
-            border: 3px solid #160611;
-            border-radius: 24px;
-            padding: 0;
-            box-shadow: 0 20px 80px rgba(0, 0, 0, 0.4);
-            background: #fff8f5;
-            color: #160611;
-            text-align: center;
-          }
-          .ppmmwu-principles-image {
-            display: block;
-            width: 100%;
-            height: auto;
-            aspect-ratio: 2 / 1;
-            object-fit: contain;
-            background: #160611;
-          }
-          .ppmmwu-principles-inner {
-            padding: clamp(20px, 3vw, 32px) clamp(18px, 4vw, 42px) 24px;
-          }
-          @media (max-width: 640px) {
-            .ppmmwu-principles-dialog { max-height: calc(100dvh - 20px); border-radius: 18px; }
-            .ppmmwu-principles-overlay { padding: 10px; }
-            .ppmmwu-principles-inner { padding: 18px 15px 20px; }
-            .ppmmwu-principles-dialog h2 { margin: 8px 0 10px; font-size: clamp(25px, 7vw, 33px); }
-            .ppmmwu-principles-dialog p { margin-bottom: 15px; font-size: 15px; }
-            .ppmmwu-principles-action { font-size: 14px; min-height: 54px; padding: 10px 12px; }
-            .ppmmwu-principles-later { margin-top: 10px; }
-          }
-          .ppmmwu-principles-close {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            z-index: 2;
-            display: grid;
-            place-items: center;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            border: 1px solid #ddd;
-            background: #fff;
-            color: #160611;
-            font-size: 30px;
-            line-height: 1;
-            cursor: pointer;
-          }
-          .ppmmwu-principles-kicker {
-            color: #930bf4;
-            font-size: 15px;
-            font-weight: 900;
-            letter-spacing: 0.06em;
-          }
-          .ppmmwu-principles-dialog h2 {
-            margin: 16px 0 18px;
-            font-size: clamp(30px, 5vw, 52px);
-            line-height: 1.03;
-            font-weight: 900;
-            color: #930bf4;
-          }
-          .ppmmwu-principles-dialog p {
-            margin: 0 auto 26px;
-            max-width: 540px;
-            font-size: clamp(16px, 2vw, 20px);
-            line-height: 1.45;
-            font-weight: 650;
-          }
-          .ppmmwu-principles-action {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            width: 100%;
-            min-height: 58px;
-            padding: 15px 22px;
-            border: 3px solid #160611;
-            border-radius: 100px;
-            background: #ffd119;
-            color: #160611;
-            font-size: clamp(14px, 2vw, 18px);
-            font-weight: 900;
-            text-decoration: none;
-            text-align: center;
-          }
-          .ppmmwu-principles-action:hover { background: #ffe269; }
-          .ppmmwu-principles-later {
-            margin-top: 18px;
-            padding: 8px 12px;
-            border: none;
-            background: transparent;
-            color: #533f4b;
-            font-size: 15px;
-            font-weight: 700;
-            text-decoration: underline;
-            cursor: pointer;
-          }
-          .ppmmwu-principles-dialog :is(button, a):focus-visible {
-            outline: 3px solid #930bf4;
-            outline-offset: 4px;
-          }
-          .ppmmwu-kickoff-dialog { width: min(100%, 1040px); }
-          .ppmmwu-kickoff-layout {
-            display: grid;
-            align-items: center;
-            gap: 28px;
-            padding: clamp(28px, 4vw, 40px) clamp(18px, 4vw, 42px) 28px;
-            text-align: left;
-          }
-          @media (max-width: 799px) {
-            .ppmmwu-kickoff-layout { gap: 16px; padding-top: 22px; }
-            .ppmmwu-kickoff-photo-wrap { max-width: 210px; }
-          }
-          @media (min-width: 800px) {
-            .ppmmwu-kickoff-layout { grid-template-columns: minmax(220px, 340px) 1fr; gap: 36px; }
-          }
-          .ppmmwu-kickoff-photo-wrap { position: relative; }
-          .ppmmwu-kickoff-photo-wrap::before {
-            content: "";
-            position: absolute;
-            right: 0;
-            bottom: -12px;
-            left: -12px;
-            height: 100%;
-            border-radius: 24px;
-            background: #ffd119;
-          }
-          .ppmmwu-kickoff-photo-wrap img {
-            position: relative;
-            display: block;
-            width: 100%;
-            height: auto;
-            border-radius: 24px;
-          }
-          .ppmmwu-kickoff-figure { margin: 0; }
-          .ppmmwu-kickoff-name { display: block; height: 44px; width: auto; max-width: 100%; object-fit: contain; object-position: left; margin-top: 16px; }
-          .ppmmwu-kickoff-dialog .ppmmwu-kickoff-role { margin: 8px 0 0; max-width: none; font-size: 18px; font-weight: 700; color: #160611; text-align: left; }
-          .ppmmwu-kickoff-dialog .ppmmwu-kickoff-team { margin: 4px 0 0; max-width: none; font-size: 16px; font-weight: 700; color: #6c5a65; text-align: left; }
-          .ppmmwu-kickoff-copy { display: flex; flex-direction: column; align-items: flex-start; }
-          .ppmmwu-kickoff-dialog h2 { max-width: 12ch; margin: 0 0 12px; text-align: left; }
-          .ppmmwu-kickoff-dialog .ppmmwu-principles-later { margin-top: 14px; }
-          .ppmmwu-principles-dialog p.ppmmwu-kickoff-line {
-            max-width: 12ch;
-            margin: 0 0 22px;
-            font-size: clamp(28px, 4vw, 46px);
-            line-height: 1.05;
-            font-weight: 900;
-            color: #160611;
-            text-align: left;
-          }
-          .ppmmwu-kickoff-signup { width: auto; min-width: 180px; padding-inline: 28px; }
         `}</style>
       </head>
       <body className="flex min-h-full flex-col bg-cream font-sans text-ink">
-        <Script
-          id="ppmmwu-principles-popup"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{ __html: bargainingPopupScript }}
-        />
         <Script id="ppmmwu-route-enhancements" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: routeEnhancementScript }} />
         <SiteHeader />
         <main className="flex-1">
