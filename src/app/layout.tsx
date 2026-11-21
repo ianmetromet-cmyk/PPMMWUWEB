@@ -184,7 +184,7 @@ const sessionsPopupScript = `
   var december22 = ${JSON.stringify(externalLinks.december22BargainingRsvp)};
   var portrait = ${JSON.stringify(sessionsPortraitSrc)};
   var seenKey = "ppmmwu-sessions-popup-seen-v1";
-  var quote = "Our proposals establish transparency in financial decisions that impact our livelihoods and meaningful protections to ensure we are placed internally in any available positions in the event of a mass layoff, well before outside candidates are offered our jobs.";
+  var quote = "\u201COur proposals establish transparency in financial decisions that impact our livelihoods and meaningful protections to ensure we are placed internally in any available positions in the event of a mass layoff, well before outside candidates are offered our jobs.\u201D";
 
   function pagePath() {
     return window.location.pathname.replace(/\\/+$/, "");
