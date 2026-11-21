@@ -1,15 +1,20 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Script from "next/script";
+import luisBerber from "@/assets/popup/luis-berber.jpg";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
+import { externalLinks } from "@/lib/site";
 import "./globals.css";
+
+const assetBase = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+const sessionsPortraitSrc = `${assetBase}${luisBerber.src}`;
 
 // PPMMWU one-file update (October 2026)
 // 1. Constrain the homepage banner to 1500px without cropping.
 // 2. Hide the obsolete homepage bargaining-updates signup.
 // 3. Route the existing Contact Us form to Ian.newman@seiu521.org using FormSubmit.
-// 4. The Virtual Campaign Kickoff welcome window has been removed. The older bargaining-principles popup stays retired.
+// 4. Show the December bargaining-sessions window on the first home page visit. The older welcome popups stay retired.
 // 5. Union update buttons keep the links set with each update.
 // 6. Preserve an intentionally concealed team portrait.
 // 7. Attribute September 2026 PPMM worker survey findings.
@@ -173,6 +178,101 @@ const contactFormScript = `
 })();
 `;
 
+const sessionsPopupScript = `
+(function () {
+  var december10 = ${JSON.stringify(externalLinks.december10BargainingRsvp)};
+  var december22 = ${JSON.stringify(externalLinks.december22BargainingRsvp)};
+  var portrait = ${JSON.stringify(sessionsPortraitSrc)};
+  var seenKey = "ppmmwu-sessions-popup-seen-v1";
+  var quote = "Our proposals establish transparency in financial decisions that impact our livelihoods and meaningful protections to ensure we are placed internally in any available positions in the event of a mass layoff, well before outside candidates are offered our jobs.";
+
+  function pagePath() {
+    return window.location.pathname.replace(/\\/+$/, "");
+  }
+
+  function isHomePage() {
+    var path = pagePath();
+    return path === "" || /\\/PPMMWUWEB$/i.test(path);
+  }
+
+  function openSessionsDialog() {
+    if (document.querySelector("[data-ppmmwu-sessions-popup]")) return;
+
+    var previousFocus = document.activeElement;
+    var previousOverflow = document.body.style.overflow;
+    var overlay = document.createElement("div");
+    overlay.className = "ppmmwu-sessions-overlay";
+    overlay.setAttribute("data-ppmmwu-sessions-popup", "");
+    overlay.innerHTML =
+      '<div class="ppmmwu-sessions-dialog" role="dialog" aria-modal="true" aria-labelledby="ppmmwu-sessions-title" aria-describedby="ppmmwu-sessions-quote" tabindex="-1">' +
+      '<button class="ppmmwu-sessions-close" type="button" data-ppmmwu-close aria-label="Close welcome window">&times;</button>' +
+      '<div class="ppmmwu-sessions-layout">' +
+      '<img class="ppmmwu-sessions-photo" src="' + portrait + '" alt="Luis Berber, HSS" />' +
+      '<div class="ppmmwu-sessions-copy">' +
+      '<h2 id="ppmmwu-sessions-title">Next bargaining sessions</h2>' +
+      '<blockquote id="ppmmwu-sessions-quote"><p>' + quote + '</p><footer>Luis Berber, HSS</footer></blockquote>' +
+      '<a class="ppmmwu-sessions-action" href="' + december10 + '" target="_blank" rel="noopener noreferrer">Click to register for our next bargaining sessions! - December 10</a>' +
+      '<a class="ppmmwu-sessions-action" href="' + december22 + '" target="_blank" rel="noopener noreferrer">Click to register for our next bargaining sessions! - December 22</a>' +
+      '<button class="ppmmwu-sessions-later" type="button" data-ppmmwu-close>Not now — continue to website</button>' +
+      "</div></div></div>";
+
+    function closeModal() {
+      if (!overlay.isConnected) return;
+      overlay.remove();
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener("keydown", handleKeys, true);
+      try { sessionStorage.setItem(seenKey, "1"); } catch (e) {}
+      if (previousFocus && typeof previousFocus.focus === "function" && previousFocus.isConnected) {
+        previousFocus.focus();
+      }
+    }
+
+    function handleKeys(event) {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        closeModal();
+        return;
+      }
+      if (event.key !== "Tab") return;
+      var controls = Array.from(overlay.querySelectorAll("button, a[href]"));
+      if (!controls.length) return;
+      var first = controls[0];
+      var last = controls[controls.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
+
+    overlay.addEventListener("click", function (event) {
+      if (event.target === overlay || event.target.closest("[data-ppmmwu-close]")) closeModal();
+    });
+
+    document.body.appendChild(overlay);
+    document.body.style.overflow = "hidden";
+    document.addEventListener("keydown", handleKeys, true);
+    var closeButton = overlay.querySelector(".ppmmwu-sessions-close");
+    if (closeButton) closeButton.focus();
+  }
+
+  function init() {
+    if (!isHomePage()) return;
+    var alreadyShown = false;
+    try { alreadyShown = sessionStorage.getItem(seenKey) === "1"; } catch (e) {}
+    if (!alreadyShown) openSessionsDialog();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init, { once: true });
+  } else {
+    init();
+  }
+})();
+`;
+
 const routeEnhancementScript = `
 (function () {
   function refresh() {
@@ -256,9 +356,134 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             .ppmmwu-timeline-scroller > img { min-width: 860px; max-width: none; }
           }
 
+          .ppmmwu-sessions-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 99999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 18px;
+            background: rgba(18, 8, 21, 0.78);
+            backdrop-filter: blur(5px);
+          }
+          .ppmmwu-sessions-dialog {
+            position: relative;
+            width: min(100%, 980px);
+            max-height: calc(100dvh - 36px);
+            overflow-y: auto;
+            border: 3px solid #160611;
+            border-radius: 24px;
+            background: #fff8f5;
+            color: #160611;
+            box-shadow: 0 20px 80px rgba(0, 0, 0, 0.4);
+          }
+          .ppmmwu-sessions-close {
+            position: sticky;
+            top: 12px;
+            float: right;
+            z-index: 2;
+            display: grid;
+            place-items: center;
+            width: 42px;
+            height: 42px;
+            margin: 12px 12px 0 0;
+            border-radius: 50%;
+            border: 1px solid #ddd;
+            background: #fff;
+            color: #160611;
+            font-size: 30px;
+            line-height: 1;
+            cursor: pointer;
+          }
+          .ppmmwu-sessions-layout {
+            display: grid;
+            align-items: center;
+            gap: 28px;
+            padding: 8px clamp(18px, 4vw, 42px) 28px;
+          }
+          .ppmmwu-sessions-photo {
+            display: block;
+            width: min(100%, 280px);
+            height: auto;
+            margin-inline: auto;
+            border-radius: 18px;
+          }
+          .ppmmwu-sessions-copy { display: flex; flex-direction: column; align-items: stretch; gap: 14px; }
+          .ppmmwu-sessions-dialog h2 {
+            margin: 0;
+            max-width: 16ch;
+            font-size: clamp(28px, 4vw, 44px);
+            line-height: 1.02;
+            font-weight: 900;
+            color: #930bf4;
+            text-align: left;
+          }
+          .ppmmwu-sessions-dialog blockquote { margin: 0; }
+          .ppmmwu-sessions-dialog blockquote p {
+            margin: 0;
+            font-size: clamp(16px, 1.7vw, 20px);
+            line-height: 1.45;
+            font-weight: 650;
+            text-align: left;
+          }
+          .ppmmwu-sessions-dialog blockquote footer {
+            margin-top: 10px;
+            font-size: 16px;
+            font-weight: 800;
+            color: #772ed0;
+            text-align: left;
+          }
+          .ppmmwu-sessions-action {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            min-height: 58px;
+            padding: 14px 22px;
+            border: 3px solid #160611;
+            border-radius: 100px;
+            background: #ffd119;
+            color: #160611;
+            font-size: clamp(15px, 1.6vw, 18px);
+            font-weight: 900;
+            line-height: 1.25;
+            text-align: center;
+            text-decoration: none;
+            text-wrap: balance;
+          }
+          .ppmmwu-sessions-action:hover { background: #ffe269; }
+          .ppmmwu-sessions-later {
+            align-self: center;
+            margin-top: 2px;
+            padding: 8px 12px;
+            border: none;
+            background: transparent;
+            color: #533f4b;
+            font-size: 15px;
+            font-weight: 700;
+            text-decoration: underline;
+            cursor: pointer;
+          }
+          .ppmmwu-sessions-dialog :is(button, a):focus-visible {
+            outline: 3px solid #930bf4;
+            outline-offset: 4px;
+          }
+          @media (max-width: 799px) {
+            .ppmmwu-sessions-overlay { padding: 10px; }
+            .ppmmwu-sessions-dialog { max-height: calc(100dvh - 20px); border-radius: 18px; }
+            .ppmmwu-sessions-layout { gap: 16px; padding: 0 16px 22px; }
+            .ppmmwu-sessions-photo { width: min(100%, 200px); }
+            .ppmmwu-sessions-action { font-size: 15px; min-height: 54px; padding: 12px 16px; }
+          }
+          @media (min-width: 800px) {
+            .ppmmwu-sessions-layout { grid-template-columns: minmax(220px, 320px) 1fr; gap: 36px; padding-top: 20px; }
+          }
+
         `}</style>
       </head>
       <body className="flex min-h-full flex-col bg-cream font-sans text-ink">
+        <Script id="ppmmwu-sessions-popup" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: sessionsPopupScript }} />
         <Script id="ppmmwu-route-enhancements" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: routeEnhancementScript }} />
         <SiteHeader />
         <main className="flex-1">

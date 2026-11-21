@@ -4,6 +4,9 @@ export const externalLinks = {
   bargainingPrinciples: "/bargaining-principles",
   openBargainingRsvp: "https://seiu521-org.zoom.us/meeting/register/Cs5aNwHMS3SlG2XIFC7s9g",
   virtualKickoffRsvp: "https://seiu521-org.zoom.us/meeting/register/mMj7dnspSGSZEyfUYe0O5g#/registration",
+  december10BargainingRsvp:
+    "https://seiu521-org.zoom.us/meeting/register/7Q-ybbmsRw-9gtNzvqgg8A#/registration",
+  december22BargainingRsvp: "https://seiu521-org.zoom.us/meeting/register/0RpZfHeOQqaswszRVn8QSQ",
   zoomBackground:
     "https://drive.google.com/file/d/1bjyCTHLT1kR0s6AIJUYGIDVucohxfBUZ/view?usp=sharing",
 };
