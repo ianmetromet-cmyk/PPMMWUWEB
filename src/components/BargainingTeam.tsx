@@ -39,7 +39,7 @@ const team: TeamMember[] = [
     role: "Clinician II",
     photo: aliyaCaler,
     quote:
-      "I believe in my coworkers and patients who deserve the same compassion and respect we dedicate to our shared mission of respectful care and a stronger workforce. When we are respected, valued and supported, we will only improve the quality of care for the communities that depend on us. The mission runs on us",
+      "I do this work because I believe that everyone deserves to be heard, respected and valued. We all deserve compassionate, judgment-free care and the ability to make decisions about our own lives and futures…. I am proud that Planned Parenthood strives to deliver this type of care!",
   },
   {
     id: "allison-chung",
