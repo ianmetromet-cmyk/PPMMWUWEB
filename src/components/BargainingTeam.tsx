@@ -143,7 +143,7 @@ export function BargainingTeam() {
           <TeamCard key={member.id} member={member} onOpen={member.quote ? () => open(member) : undefined} />
         ))}
         <li className="flex h-[320px] items-center justify-center rounded-[18px] bg-purple p-6">
-          <img src="/logo-mark.png" alt="PPMMWU" className="h-auto max-h-full w-[92%] object-contain" />
+          <img src="/logo-mark.png" alt="PPMMWU" className="h-auto max-h-[68%] w-[68%] object-contain" />
         </li>
       </ul>
 
@@ -174,7 +174,11 @@ export function BargainingTeam() {
                     alt={active.name ? `${active.name} portrait` : "PPMMWU bargaining team member portrait"}
                     fill
                     sizes="320px"
-                    className="object-cover object-center"
+                    className={
+                      active.id === "aliya-caler"
+                        ? "origin-[center_8%] scale-[1.28] object-cover"
+                        : "object-cover object-center"
+                    }
                   />
                 </div>
               )}
