@@ -4,7 +4,7 @@ import teamPortrait01 from "@/assets/team/t01.png";
 import teamPortrait05 from "@/assets/team/t05.png";
 import teamPortrait06 from "@/assets/team/t06.jpg";
 import teamPortrait09 from "@/assets/team/t09.png";
-import voicePortrait01 from "@/assets/voices/v01.jpg";
+import aliyaCaler from "@/assets/team/aliya-caler.png";
 import voicePortrait02 from "@/assets/voices/v02.jpg";
 import voicePortrait03 from "@/assets/voices/v03.jpg";
 import { ContactForm } from "@/components/ContactForm";
@@ -20,7 +20,7 @@ function portrait(image: StaticImageData) {
 
 const voices: Voice[] = [
   {
-    ...portrait(voicePortrait01),
+    ...portrait(aliyaCaler),
     nameImage: "/nameplates/n10-purple.png",
     role: "Clinician, Oakland",
     team: "PPMMWU Member Action Team Member",
@@ -41,7 +41,7 @@ const voices: Voice[] = [
     role: "HSS II, Fulton",
     team: "PPMMWU Bargaining Team Member",
     quote:
-      "I do this work for all the individuals who sit in a Planned Parenthood waiting room, pregnant, scared, and uncertain about the future. Someone was there for me without judgment. Every patient deserves compassion, dignity, and someone they can trust. The mission runs on us.",
+      "I do this work for all of the individuals who sit in a Planned Parenthood waiting room, pregnant, scared, and uncertain about the future. Someone was there for me without judgment. Every patient deserves compassion, dignity, and someone they can trust.",
   },
   {
     ...portrait(voicePortrait02),

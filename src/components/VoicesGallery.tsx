@@ -83,13 +83,13 @@ export function VoicesGallery({ voices }: { voices: Voice[] }) {
               </button>
             </div>
             <div className="flex flex-col gap-6 md:flex-row">
-              <div className="relative aspect-[469/392] w-full shrink-0 overflow-hidden rounded-[20px] bg-purple md:w-[469px]">
+              <div className="relative mx-auto aspect-[4/5] w-[min(320px,100%)] shrink-0 self-center overflow-hidden rounded-[20px] bg-purple">
                 <Image
                   src={active.image}
                   alt={active.imageAlt}
                   fill
-                  sizes="469px"
-                  className={fitClasses[active.imageFit]}
+                  sizes="320px"
+                  className="object-cover object-center"
                 />
               </div>
               <figure className="flex flex-1 flex-col gap-4 rounded-[20px] border border-line bg-cream p-6">
